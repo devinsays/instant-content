@@ -1,0 +1,39 @@
+/* Styling for the Instant Content Plugin */
+
+.posts_page_instant-content-search .nav-tab-wrapper,
+.posts_page_instant-content-library .nav-tab-wrapper,
+.posts_page_instant-content-settings .nav-tab-wrapper,
+.posts_page_instant-content-import .nav-tab-wrapper {
+	margin-bottom:20px;
+}
+.posts_page_instant-content-search #search_box {
+	float:left;
+}
+.posts_page_instant-content-search p.search-box {
+	float:none;
+	margin-bottom:30px;
+}
+#instant-content #results-table td {
+	padding: 15px 7px 15px;
+}
+#instant-content #table-footer {
+	display: none;
+}
+#instant-content #results-table .no-border {
+	border:none;
+}
+#instant-content-library .column-date {
+	width:180px;
+}
+#instant-content-library #table-footer {
+	display: none;
+}
+.widefat .tr-info td {
+	padding: 14px 7px 14px;
+}
+.instant-content-updated .waiting {
+	margin:0 10px -3px 0;
+}
+.tablenav .tablenav-pages {
+	display: none;
+}
