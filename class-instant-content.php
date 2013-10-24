@@ -138,7 +138,7 @@ class InstantContent {
 
 		if ( $screen->id == ( $this->search_hook || $this->settings_hook || $this->library_hook || $this->import_hook ) ) :
 
-			wp_enqueue_script( $this->slug . '-admin-script', plugins_url( 'js/scripts.js', __FILE__ ), array( 'jquery' ), $this->version );
+			wp_enqueue_script( $this->slug . '-admin-script', plugins_url( 'js/instant-content-scripts.js', __FILE__ ), array( 'jquery' ), $this->version );
 
 			$options = get_option( 'instant_content', false );
 			$license = isset( $options['license'] ) ? $options['license'] : '';
