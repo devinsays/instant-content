@@ -2,13 +2,19 @@
 /**
  * Importer methods for Instant Content plugin.
  *
- * @package   Instant Content
+ * @package   Instant_Content
  * @author    Demand Media <instantcontent@demandmedia.com>
  * @license   GPL-2.0+
  * @link      http://instantconent.me
  * @copyright 2013 Demand Media
  */
 
+/**
+ * Importer admin page.
+ *
+ * @package Instant_Content
+ * @author  Demand Media <instantcontent@demandmedia.com>
+ */
 class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 
 	/**

@@ -7,6 +7,12 @@
  * @copyright 2013 Demand Media
  */
 
+/**
+ * Settings admin page.
+ *
+ * @package Instant_Content
+ * @author  Demand Media <instantcontent@demandmedia.com>
+ */
 class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 
 	/**
