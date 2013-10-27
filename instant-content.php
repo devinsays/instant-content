@@ -17,6 +17,8 @@
  * Author URI:  http://instantcontent.me
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain: instant-content
+ * Domain Path: /languages
  */
 
 // If this file is called directly, abort.
@@ -24,18 +26,35 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-// Load the Instant Content Class
+// Load the Instant Content classes
 require plugin_dir_path( __FILE__ ) . 'class-instant-content.php';
-require plugin_dir_path( __FILE__ ) . 'class-instant-content-importer.php';
+require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin.php';
+require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin-search.php';
+require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin-library.php';
+require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin-importer.php';
+require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin-settings.php';
 
-// Instantiate importer class, so we can add it as a dependency to main plugin class.
-$instant_content_importer = new Instant_Content_Importer;
+// Instantiate the main plugin class
+$instant_content = new Instant_Content;
+$instant_content->init();
 
-// Initialize the class
+// Instantiate the search page class
+$instant_content_admin_search = new Instant_Content_Admin_Search;
+$instant_content_admin_search->init();
+
+// Instantiate the library page class
+$instant_content_admin_library = new Instant_Content_Admin_Library;
+$instant_content_admin_library->init();
+
+// Instantiate importer page class
+$instant_content_importer = new Instant_Content_Admin_Importer;
 $instant_content_importer->init();
+// Register ajax actions
+add_action( 'wp_ajax_instant_content_import', array( $instant_content_importer, 'instant_content_import') );
 
-// Load the main plugin class
-Instant_Content::get_instance();
+// Instantiate the settings page class
+$instant_content_admin_settings = new Instant_Content_Admin_Settings;
+$instant_content_admin_settings->init();
 
 // Constants used for plugin updates
 define( 'INSTANT_CONTENT_UPDATE_URL', 'http://instantcontent.me' );
@@ -43,7 +62,7 @@ define( 'INSTANT_CONTENT_PLUGIN', 'Instant Content' );
 
 // Load the updater class
 if ( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-	require_once( plugin_dir_path( __FILE__ ) . 'class-instant-content-updater.php' );
+	require_once( plugin_dir_path( __FILE__ ) . 'class-instant-content-plugin-updater.php' );
 }
 
 // Retrieve license key from the DB
@@ -51,10 +70,13 @@ $options = get_option( 'instant_content', false );
 $license_key = isset( $options['license'] ) ? $options['license'] : '';
 
 // Setup the updater
-$edd_updater = new EDD_SL_Plugin_Updater( INSTANT_CONTENT_UPDATE_URL, __FILE__, array(
-		'version' 	=> '0.1', // current version number
+$instant_content_plugin_updater = new Instant_Content_Plugin_Updater(
+	INSTANT_CONTENT_UPDATE_URL,
+	__FILE__,
+	array(
+		'version' 	=> Instant_Content::VERSION, // current version number
 		'license' 	=> $license_key,
 		'item_name' => INSTANT_CONTENT_PLUGIN,
-		'author' 	=> 'Demand Media'
+		'author' 	=> 'Demand Media',
 	)
 );
