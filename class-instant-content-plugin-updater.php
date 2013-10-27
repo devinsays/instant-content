@@ -1,16 +1,17 @@
 <?php
 /**
- * @package   Instant Content
+ * Allows plugins to use their own update API.
+ *
+ * Class originally called EDD_SL_Plugin_Updater.
+ *
+ * @package   Instant_Content
  * @author    Pippin Williamson
  * @license   GPL-2.0+
  * @copyright Pippin Williamson
  * @version   1.1
- *
- * Allows plugins to use their own update API.
- *
  */
 
-class EDD_SL_Plugin_Updater {
+class Instant_Content_Plugin_Updater {
 	private $api_url  = '';
 	private $api_data = array();
 	private $name     = '';

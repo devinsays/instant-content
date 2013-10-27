@@ -12,17 +12,17 @@
 
 <div class="wrap">
 	<?php screen_icon(); ?>
-	<h2><?php _e( 'Import Content', $this->slug  ); ?></h2>
+	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
 	<h2 class="nav-tab-wrapper">
-		<a href="<?php echo admin_url( 'edit.php?page=instant-content-search' ) ?>" class="nav-tab"><?php _e( 'Find Content', $this->slug  ); ?></a>
-		<a href="<?php echo admin_url( 'edit.php?page=instant-content-library' ) ?>" class="nav-tab"><?php _e( 'Library', $this->slug  ); ?></a>
-		<a href="<?php echo admin_url( 'edit.php?page=instant-content-settings' ) ?>" class="nav-tab"><?php _e( 'Settings', $this->slug  ); ?></a>
+		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-search' ) ); ?>" class="nav-tab"><?php _e( 'Find Content', 'instant-content' ); ?></a>
+		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-library' ) ); ?>" class="nav-tab"><?php _e( 'Library', 'instant-content' ); ?></a>
+		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-settings' ) ); ?>" class="nav-tab"><?php _e( 'Settings', 'instant-content' ); ?></a>
 	</h2>
 
+	<div class="updated inline below-h2 instant-content-updated"><p><img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" width="16"><?php _e( 'Importing content.', 'instant-content' ); ?></p></div>
 	<?php if ( isset( $_POST['instant-content-import-key'] ) ) { ?>
-		<div class="updated inline below-h2 instant-content-updated"><p><img class="waiting" src="<?php echo admin_url('images/wpspin_light.gif'); ?>" alt="" width="16"><?php _e( 'Importing content.', $this->slug  ); ?></p></div>
-		<input id="instant-content-import-key" type="hidden" value="<?php echo $_POST['instant-content-import-key']; ?>">
+		<input type="hidden" value="<?php echo esc_attr( $_POST['instant-content-import-key'] ); ?>" id="js-instant-content-import-key" />
 	<?php } ?>
 
 	<div class="import-data"></div>

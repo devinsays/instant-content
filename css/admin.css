@@ -1,0 +1,29 @@
+/* Styling for the Instant Content Plugin */
+
+.results-table td {
+	padding: 15px 7px;
+}
+
+.table-footer-row {
+	display: none;
+}
+
+.results-table .no-border {
+	border: none;
+}
+
+.widefat .column-date {
+	width: 180px;
+}
+
+.widefat .tr-info td {
+	padding: 14px 7px;
+}
+
+.instant-content-updated .waiting {
+	margin: 0 10px -3px 0;
+}
+
+.tablenav .tablenav-pages {
+	display: none;
+}
