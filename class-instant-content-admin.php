@@ -58,11 +58,13 @@ abstract class Instant_Content_Admin {
 
 		// Messy use of a global to ensure that each admin page object doesn't re-enqueue when its own class is init()'d.
 		global $instant_content_init;
+
 		if ( ! $instant_content_init ) {
 			// Load admin style sheet and JavaScript.
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_styles' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
 			$instant_content_init = true;
+
 		}
 	}
 
@@ -90,12 +92,18 @@ abstract class Instant_Content_Admin {
 	public function enqueue_admin_scripts() {
 		$screen = get_current_screen();
 
+		if ( ! in_array( $screen->id, $this->get_page_hooks() ) ) {
+		 	return;
+		}
+
 		if ( $screen->id === $this->search_hook ) {
 			add_thickbox();
 		}
 
-		if ( ! in_array( $screen->id, $this->get_page_hooks() ) ) {
-		 	return;
+		// @todo
+		// $this->$settings_hook not available for some reason
+		if ( $screen->id === 'admin_page_instant-content-settings' ) {
+			add_thickbox();
 		}
 
 		wp_enqueue_script( Instant_Content::SLUG . '-admin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), Instant_Content::VERSION, true );
