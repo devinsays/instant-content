@@ -11,7 +11,7 @@
 ?>
 
 <div class="wrap">
-	<?php screen_icon(); ?>
+	<?php screen_icon( 'post' ); ?>
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
 	<h2 class="nav-tab-wrapper">
@@ -20,7 +20,7 @@
 		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-settings' ) ); ?>" class="nav-tab"><?php _e( 'Settings', 'instant-content' ); ?></a>
 	</h2>
 
-	<div class="updated inline below-h2 instant-content-updated"><p><img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" width="16"><?php __( 'Loading library.', 'instant-content' ); ?></p></div>
+	<div class="updated inline below-h2 instant-content-updated"><p><img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" width="16"><?php _e( 'Loading library.', 'instant-content' ); ?></p></div>
 	<?php
 	$options = get_option( 'instant_content', false );
 	$license = isset( $options['license'] ) ? $options['license'] : '';

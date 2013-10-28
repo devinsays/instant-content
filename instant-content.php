@@ -61,7 +61,7 @@ define( 'INSTANT_CONTENT_UPDATE_URL', 'http://instantcontent.me' );
 define( 'INSTANT_CONTENT_PLUGIN', 'Instant Content' );
 
 // Load the updater class
-if ( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+if ( !class_exists( 'Instant_Content_Plugin_Updater' ) ) {
 	require_once( plugin_dir_path( __FILE__ ) . 'class-instant-content-plugin-updater.php' );
 }
 

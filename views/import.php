@@ -11,7 +11,7 @@
 ?>
 
 <div class="wrap">
-	<?php screen_icon(); ?>
+	<?php screen_icon( 'post' ); ?>
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
 	<h2 class="nav-tab-wrapper">
