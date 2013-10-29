@@ -100,9 +100,7 @@ abstract class Instant_Content_Admin {
 			add_thickbox();
 		}
 
-		// @todo
-		// $this->$settings_hook not available for some reason
-		if ( $screen->id === 'admin_page_instant-content-settings' ) {
+		if ( 'admin_page_instant-content-settings' === $screen->id ) {
 			add_thickbox();
 		}
 
