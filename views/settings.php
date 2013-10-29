@@ -48,20 +48,7 @@
 		<table class="form-table">
 			<tbody>
 				<tr valign="top">
-					<th scope="row"><h3><?php _e( 'License Settings', 'instant-content' ); ?></h3></th>
-				</tr>
-				<th scope="row" valign="top">
-						<?php _e( 'License Terms', 'instant-content' ); ?>
-					</th>
-					<td>
-						<label for="instant_content[terms]">
-						<input type="checkbox" id="instant_content[terms]" name="instant_content[terms]" value="1"<?php checked( $terms ); ?> />
-						<?php printf(
-							__( 'I have read and agree to the <a class="thickbox" href="%s">license terms</a>.', 'instant-content' ),
-							esc_url( plugins_url( 'service-license.html?width=800', __FILE__ ) )
-							);
-						?>
-					</td>
+					<th scope="row"><h3><?php _e( 'Settings', 'instant-content' ); ?></h3></th>
 				</tr>
 				<tr valign="top">
 					<th scope="row" valign="top">
@@ -79,6 +66,22 @@
 							);
 						} ?>
 						</label></p>
+					</td>
+				</tr>
+				<tr>
+					<th scope="row" valign="top">
+						<?php _e( 'License Terms', 'instant-content' ); ?>
+					</th>
+					<td>
+						<iframe id="iframe-terms" class="clearfix" src="<?php echo esc_url( plugins_url( 'service-license.html?width=800', __FILE__ ) ); ?>">
+						</iframe>
+						<label for="instant_content[terms]">
+						<input type="checkbox" id="instant_content[terms]" name="instant_content[terms]" value="1"<?php checked( $terms ); ?> />
+						<?php printf(
+							__( 'I have read and agree to the <a class="thickbox" href="%s">license terms</a>.', 'instant-content' ),
+							esc_url( plugins_url( 'service-license.html?width=800', __FILE__ ) )
+							);
+						?>
 					</td>
 				</tr>
 				<tr valign="top">

@@ -106,4 +106,10 @@
 		</table>
 	</form>
 
+	<p class="instant-content-terms"><?php printf(
+		__( '<a class="thickbox" href="%s">Instant Content Terms and Conditions</a>', 'instant-content' ),
+		esc_url( plugins_url( 'service-license.html?width=800', __FILE__ ) )
+		); ?>
+	</p>
+
 </div>

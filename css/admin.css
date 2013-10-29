@@ -31,3 +31,17 @@ h2.nav-tab-wrapper {
 .tablenav .tablenav-pages {
 	display: none;
 }
+
+#iframe-terms {
+	display: block;
+	width:90%;
+	max-width:600px;
+	height:200px;
+	border:1px solid #ccc;
+	border-radius:3px;
+	margin-bottom:20px;
+}
+
+.instant-content-terms {
+	margin-top:20px;
+}
