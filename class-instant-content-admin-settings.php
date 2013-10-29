@@ -92,23 +92,44 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 
 		// License sanitization and activation
 		$license = isset( $options['license'] ) ? $options['license'] : '';
-		$status = isset( $options['license_status'] ) ? $options['license_status'] : false;
+		$status = isset( $options['license_status'] ) ? $options['license_status'] : '';
+
+		// Manually set as this does not come from form data
+		$output['license_status'] = $status;
 
 		if ( isset( $input['license'] ) ) {
-			if ( ( $license !== $input['license'] ) || ( $status !== 'valid' ) ) {
+
+			// Sometimes the license doesn't activate on the first save
+			// Trying to accomodate for this race condition
+			if ( $status !== 'valid' && ( $license === $input['license'] ) ) {
 				if ( 32 === strlen( $input['license'] ) ) {
 					$output['license_status'] = $this->activate_license( $input['license'] );
-				} else {
-					if ( !isset( $input['init'] ) ) {
-						add_settings_error(
-							'instantcontent_settings',
-							esc_attr( 'settings_updated' ),
-							__( 'License key should be 32 characters.', 'instant-content' ),
-							'error'
-						);
-					}
 				}
 			}
+
+			// For new license keys
+			if ( $license !== $input['license'] ) {
+				// Reset license status
+				$output['license_status'] = '';
+				// If new license is a valid length, activate it
+				if ( 32 === strlen( $input['license'] ) ) {
+					$output['license_status'] = $this->activate_license( $input['license'] );
+				}
+
+			}
+
+			// Let user know if license key isn't proper length
+			if ( 32 !== strlen( $input['license'] ) && !isset( $input['init'] ) ) {
+				$output['license_status'] = '';
+				add_settings_error(
+					'instantcontent_settings',
+					esc_attr( 'settings_updated' ),
+					__( 'License key should be 32 characters.', 'instant-content' ),
+					'error'
+				);
+			}
+
+			// @todo Sanitization?
 			$output['license'] = $input['license'];
 		}
 

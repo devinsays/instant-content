@@ -45,7 +45,6 @@
 		}
 		?>
 
-		<input type="hidden" name="instant_content[license_status]" value="<?php echo $status; ?>">
 		<table class="form-table">
 			<tbody>
 				<tr valign="top">
