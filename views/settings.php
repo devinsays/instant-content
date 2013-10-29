@@ -36,6 +36,13 @@
 		$resources     = isset( $options['resources'] ) ? $options['resources'] : 0;
 		$tips          = isset( $options['tips'] ) ? $options['tips'] : 0;
 		$things_needed = isset( $options['things_needed'] ) ? $options['things_needed'] : 0;
+
+		// If options haven't been set, default these checkbox values to true
+		if ( !$options ) {
+			$resources = 1;
+			$tips = 1;
+			$things_needed = 1;
+		}
 		?>
 
 		<input type="hidden" name="instant_content[license_status]" value="<?php echo $status; ?>">
@@ -49,7 +56,7 @@
 					</th>
 					<td>
 						<label for="instant_content[terms]">
-						<input type="checkbox" name="instant_content[terms]" value="1"<?php checked( $terms ); ?> />
+						<input type="checkbox" id="instant_content[terms]" name="instant_content[terms]" value="1"<?php checked( $terms ); ?> />
 						<?php printf(
 							__( 'I have read and agree to the <a class="thickbox" href="%s">license terms</a>.', 'instant-content' ),
 							esc_url( plugins_url( 'service-license.html?width=800', __FILE__ ) )
@@ -96,8 +103,10 @@
 						<?php _e( 'References and Resources', 'instant-content' ); ?>
 					</th>
 					<td>
-						<input type="checkbox" name="instant_content[resources]" value="1"<?php checked( $resources ); ?> />
-						<p class="description"><?php _e( 'Some articles contain a list of references and resources for the article. These are generally links.', 'instant-content' ); ?></p>
+						<label for="instant_content[resources]">
+						<input type="checkbox" id="instant_content[resources]" name="instant_content[resources]" value="1"<?php checked( $resources ); ?> />
+						<?php _e( 'Import if present.', 'instant-content' ); ?>
+						</label>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -105,8 +114,10 @@
 						<?php _e( 'Tips and Warnings', 'instant-content'); ?>
 					</th>
 					<td>
-						<input type="checkbox" name="instant_content[tips]" value="1"<?php checked( $tips ); ?> />
-						<p class="description"><?php _e( 'Some articles contain tips and warnings.', 'instant-content' ); ?></p>
+						<label for="instant_content[tips]">
+						<input type="checkbox" id="instant_content[tips]" name="instant_content[tips]" value="1"<?php checked( $tips ); ?> />
+						<?php _e( 'Import if present.', 'instant-content' ); ?>
+						</label>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -114,8 +125,10 @@
 						<?php _e( 'Things Needed', 'instant-content' ); ?>
 					</th>
 					<td>
-						<input type="checkbox" name="instant_content[things_needed]" value="1"<?php checked( $things_needed ); ?> />
-						<p class="description"><?php _e( 'Some how-to articles contain a list of things needed to complete the project.', 'instant-content' ); ?></p>
+						<label for="instant_content[things_needed]">
+						<input type="checkbox" id="instant_content[things_needed]" name="instant_content[things_needed]" value="1"<?php checked( $things_needed ); ?> />
+						<?php _e( 'Import if present.', 'instant-content' ); ?>
+						</label>
 					</td>
 				</tr>
 			</tbody>
