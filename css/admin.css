@@ -1,5 +1,9 @@
 /* Styling for the Instant Content Plugin */
 
+h2.nav-tab-wrapper {
+	margin-bottom:20px;
+}
+
 .results-table td {
 	padding: 15px 7px;
 }

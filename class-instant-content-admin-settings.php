@@ -88,23 +88,25 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	 */
 	public function settings_sanitization( $input ) {
 
-		$options = get_option( 'instant_content' );
+		$options = get_option( 'instant_content', false );
 
 		// License sanitization and activation
 		$license = isset( $options['license'] ) ? $options['license'] : '';
 		$status = isset( $options['license_status'] ) ? $options['license_status'] : false;
 
-		if ( $input['license'] ) {
+		if ( isset( $input['license'] ) ) {
 			if ( ( $license !== $input['license'] ) || ( $status !== 'valid' ) ) {
 				if ( 32 === strlen( $input['license'] ) ) {
 					$output['license_status'] = $this->activate_license( $input['license'] );
 				} else {
-					add_settings_error(
-						'instantcontent_settings',
-						esc_attr( 'settings_updated' ),
-						__( 'License key should be 32 characters.', 'instant-content' ),
-						'error'
-					);
+					if ( !isset( $input['init'] ) ) {
+						add_settings_error(
+							'instantcontent_settings',
+							esc_attr( 'settings_updated' ),
+							__( 'License key should be 32 characters.', 'instant-content' ),
+							'error'
+						);
+					}
 				}
 			}
 			$output['license'] = $input['license'];
@@ -131,12 +133,20 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 		if ( isset( $input['things_needed'] ) )
 			$output['things_needed'] = $this->one_zero( $input['things_needed'] );
 
-		add_settings_error(
-			'instantcontent_settings',
-			esc_attr( 'settings_updated' ),
-			__( 'Settings saved.', 'instant-content' ),
-			'updated'
-		);
+		if ( !isset( $input['init'] ) ) {
+			add_settings_error(
+				'instantcontent_settings',
+				esc_attr( 'settings_updated' ),
+				__( 'Settings saved.', 'instant-content' ),
+				'updated'
+			);
+		}
+
+		// Bit of a hack, but prevents setting notices
+		// from displaying twice on first run
+		if ( !$options ) {
+			$output['init'] = true;
+		}
 
 		return $output;
 	}

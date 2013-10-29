@@ -52,7 +52,7 @@
 						<input type="checkbox" name="instant_content[terms]" value="1"<?php checked( $terms ); ?> />
 						<?php printf(
 							__( 'I have read and agree to the <a class="thickbox" href="%s">license terms</a>.', 'instant-content' ),
-							plugins_url( 'service-license.html?width=800', __FILE__ )
+							esc_url( plugins_url( 'service-license.html?width=800', __FILE__ ) )
 							);
 						?>
 					</td>
