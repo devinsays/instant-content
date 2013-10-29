@@ -268,7 +268,7 @@ window['instantContent'] = {
 			jQuery('#js-paypal-item-name').val(title);
 			jQuery('#js-paypal-item-amount').val( jQuery(event.target).attr('data-price') );
 			custom = {
-				'article_keys'    : [jQuery(event.target).data('key')],
+				'article_keys'    : [jQuery(event.target).data('key').toString()],
 				'license_key'     : instantContentL10n.license,
 				'purchaser_domain': instantContentL10n.referrer
 			};
