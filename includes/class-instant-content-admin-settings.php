@@ -54,7 +54,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	 * @since 0.1.0
 	 */
 	public function display() {
-		include 'views/settings.php';
+		$this->view( 'settings' );
 	}
 
 	/**

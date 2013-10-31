@@ -51,7 +51,7 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 	 * @since 0.1.0
 	 */
 	public function display() {
-		include 'views/search.php';
+		$this->view( 'search' );
 	}
 
 	/**

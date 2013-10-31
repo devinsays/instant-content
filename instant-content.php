@@ -27,12 +27,12 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 // Load the Instant Content classes
-require plugin_dir_path( __FILE__ ) . 'class-instant-content.php';
-require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin.php';
-require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin-search.php';
-require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin-library.php';
-require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin-importer.php';
-require plugin_dir_path( __FILE__ ) . 'class-instant-content-admin-settings.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-search.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-library.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-importer.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-settings.php';
 
 // Instantiate the main plugin class
 $instant_content = new Instant_Content;
@@ -62,7 +62,7 @@ define( 'INSTANT_CONTENT_PLUGIN', 'Instant Content' );
 
 // Load the updater class
 if ( !class_exists( 'Instant_Content_Plugin_Updater' ) ) {
-	require_once( plugin_dir_path( __FILE__ ) . 'class-instant-content-plugin-updater.php' );
+	require_once( plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-plugin-updater.php' );
 }
 
 // Retrieve license key from the DB

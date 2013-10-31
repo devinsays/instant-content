@@ -80,7 +80,7 @@ abstract class Instant_Content_Admin {
 		if ( ! in_array( $screen->id, $this->get_page_hooks() ) ) {
 		 	return;
 		}
-		wp_enqueue_style( Instant_Content::SLUG .'-admin-styles', plugins_url( 'css/admin.css', __FILE__ ), array(), Instant_Content::VERSION );
+		wp_enqueue_style( Instant_Content::SLUG .'-admin-styles', plugins_url( 'css/admin.css', dirname( __FILE__ ) ), array(), Instant_Content::VERSION );
 	}
 
 	/**
@@ -104,7 +104,7 @@ abstract class Instant_Content_Admin {
 			add_thickbox();
 		}
 
-		wp_enqueue_script( Instant_Content::SLUG . '-admin-script', plugins_url( 'js/admin.js', __FILE__ ), array( 'jquery' ), Instant_Content::VERSION, true );
+		wp_enqueue_script( Instant_Content::SLUG . '-admin-script', plugins_url( 'js/admin.js', dirname( __FILE__ ) ), array( 'jquery' ), Instant_Content::VERSION, true );
 
 		$options = get_option( 'instant_content', false );
 
@@ -174,6 +174,17 @@ abstract class Instant_Content_Admin {
 			'<p><strong>' . __( 'For more information:', 'instant-content' ) . '</strong></p>' .
 			'<p><a href="http://instantcontent.me" target="_blank" title="' . esc_attr__( 'Get Support', 'instant-content' ) . '">' . __( 'Get Support', 'instant-content' ) . '</a></p>'
 		);
+	}
+
+	/**
+	 * Include a view file.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param  string $slug File name slug e.g. 'search'.
+	 */
+	protected function view( $slug ) {
+		include dirname( plugin_dir_path( __FILE__ ) ) . '/views/' . sanitize_file_name( $slug ) . '.php';
 	}
 
 	/**
