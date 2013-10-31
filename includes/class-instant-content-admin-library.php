@@ -40,7 +40,7 @@ class Instant_Content_Admin_Library extends Instant_Content_Admin {
 	 * @since 0.1.0
 	 */
 	public function display() {
-		include 'views/library.php';
+		$this->view( 'library' );
 	}
 
 	/**
