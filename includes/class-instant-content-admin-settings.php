@@ -213,9 +213,12 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 		// Decode the license data
 		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
-
-		// $license_data->license will be either "active" or "inactive"
-		return $license_data->license;
+		if ( $license_data ) {
+			// $license_data->license will be either "active" or "inactive"
+			return $license_data->license;
+		} else {
+			return 'error';
+		}
 	}
 
 }
