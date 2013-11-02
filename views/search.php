@@ -60,7 +60,7 @@
 		</div>
 	</div>
 
-	<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" id="js-instant-content">
+	<form action="https://www.paypal.com/cgi-bin/webscr" method="post" id="js-instant-content">
 		<input type="hidden" name="cmd" value="_xclick" />
 		<input type="hidden" name="business" value="instantcontent@demandmedia.com" />
 		<input type="hidden" name="amount" value="" id="js-paypal-item-amount" />

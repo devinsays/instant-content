@@ -15,7 +15,7 @@ class Instant_Content {
 	 * @since 0.1.0
 	 * @type string
 	 */
-	const VERSION = '0.1.0';
+	const VERSION = '1.0.0';
 
 	/**
 	 * Unique identifier

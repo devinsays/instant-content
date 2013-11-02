@@ -12,7 +12,7 @@
  * Plugin Name: Instant Content
  * Plugin URI:  http://instantcontent.me
  * Description: Purchase Demand Media content to use on your WordPress site.
- * Version:     0.1
+ * Version:     1.0.0
  * Author:      Demand Media
  * Author URI:  http://instantcontent.me
  * License:     GPL-2.0+
