@@ -140,7 +140,7 @@ abstract class Instant_Content_Admin {
 			'editPost'         => __( 'Edit Post', 'instant-content' ),
 
 			// API
-			'apiURL'         => Instant_Content::API_URL,
+			'apiBaseUrl'       => Instant_Content::API_BASE_URL,
 		);
 
 		wp_localize_script( Instant_Content::SLUG . '-admin-script', 'instantContentL10n', $l10n );

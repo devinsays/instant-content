@@ -184,7 +184,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	 * @return string          URL
 	 */
 	function get_content_fetch_url( $key, $license ) {
-		$api = Instant_Content::API_URL . '/instant_content/get/article/content?json=';
+		$api = Instant_Content::API_BASE_URL . 'get/article/content?json=';
 		$url_args = array(
 			'article_key' => $key,
 			'license_key' => $license

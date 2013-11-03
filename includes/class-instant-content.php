@@ -31,7 +31,7 @@ class Instant_Content {
 	 * @since 1.0.0
 	 * @type string
 	 */
-	const API_URL = 'http://odin.demandstudios.com';
+	const API_BASE_URL = 'http://odin.demandstudios.com/instant_content/';
 
 	/**
 	 * Initialize the plugin.
