@@ -26,6 +26,14 @@ class Instant_Content {
 	const SLUG = 'instant-content';
 
 	/**
+	 * Base URL for the Instant Content API
+	 *
+	 * @since 1.0.0
+	 * @type string
+	 */
+	const API_URL = 'http://odin.demandstudios.com';
+
+	/**
 	 * Initialize the plugin.
 	 *
 	 * @since 1.0.0

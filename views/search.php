@@ -70,7 +70,7 @@
 		<input type="hidden" name="cbt" value="<?php esc_attr_e( 'Return to your website and complete import.', 'instant-content' ); ?>" />
 		<input type="hidden" name="return" value="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-library' ) ); ?>" />
 		<input type="hidden" name="cancel_return" value="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-search' ) ); ?>" />
-		<input type="hidden" name="notify_url" value="https://odin.demandstudios.com/instant_content/process/ipn/message" />
+		<input type="hidden" name="notify_url" value="<?php echo Instant_Content::API_URL; ?>/instant_content/process/ipn/message" />
 		<input type="hidden" name="callback_version" value="1" />
 		<input type="hidden" name="purchase-url" id="purchase-url" />
 		<?php wp_nonce_field( 'instant-content'); ?>

@@ -138,6 +138,9 @@ abstract class Instant_Content_Admin {
 			// Import
 			'viewDraftPost'    => __( 'View Draft Post', 'instant-content' ),
 			'editPost'         => __( 'Edit Post', 'instant-content' ),
+
+			// API
+			'apiURL'         => Instant_Content::API_URL,
 		);
 
 		wp_localize_script( Instant_Content::SLUG . '-admin-script', 'instantContentL10n', $l10n );

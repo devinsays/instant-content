@@ -69,7 +69,7 @@ window['instantContent'] = {
 			'offset'     : offset,
 			'max_items'  : instantContent.maxItems
 		};
-		url = 'http://odin.demandstudios.com/instant_content/find/article/by_text?json=';
+		url = instantContentL10n.apiURL + '/instant_content/find/article/by_text?json=';
 		url = url + JSON.stringify(urlArgs);
 
 		instantContent.searchPagination.prop('disabled', true);
@@ -176,7 +176,7 @@ window['instantContent'] = {
 			'article_key': articleKey,
 			'license_key': instantContentL10n.license
 		};
-		return 'http://odin.demandstudios.com/instant_content/get/article/for_preview?json=' + JSON.stringify(previewArgs);
+		return instantContentL10n.apiURL + '/instant_content/get/article/for_preview?json=' + JSON.stringify(previewArgs);
 	},
 
 	/**
@@ -314,7 +314,7 @@ window['instantContentLibrary'] = {
 		'use strict';
 		var ajaxArgs,
 			jqxhr,
-			url = 'http://odin.demandstudios.com/instant_content/get/article/all_purchased?json={ "license_key":"' + instantContentL10n.license + '", "offset":0, "max_items":1000}',
+			url = instantContentL10n.apiURL + '/instant_content/get/article/all_purchased?json={ "license_key":"' + instantContentL10n.license + '", "offset":0, "max_items":1000}',
 			$messageHolder = jQuery('.instant-content-updated p');
 
 		// Debug
