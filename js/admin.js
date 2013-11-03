@@ -372,7 +372,7 @@ window['instantContentLibrary'] = {
 		jqxhr.done(instantContentLibrary.librarySuccess);
 
 		// On ajax error. @todo check if this is actually possible to fire on cross-domain jsonp datatype?
-		jqxhr.fail(instantContentSearch.failedToConnect);
+		jqxhr.fail(instantContentLibrary.failedToConnect);
 
 	},
 
