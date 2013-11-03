@@ -2,7 +2,7 @@
 
 Contributors: Instant Content
 Tags: importer
-Requires at least: 3.7
+Requires at least: 3.6
 Tested up to: 3.7
 Stable tag: 1.0.0
 License: GPLv2 or later

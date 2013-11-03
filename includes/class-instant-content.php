@@ -12,7 +12,7 @@ class Instant_Content {
 	/**
 	 * Plugin version, used for cache-busting of style and script file references.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @type string
 	 */
 	const VERSION = '1.0.0';
@@ -20,7 +20,7 @@ class Instant_Content {
 	/**
 	 * Unique identifier
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @type string
 	 */
 	const SLUG = 'instant-content';
@@ -28,7 +28,7 @@ class Instant_Content {
 	/**
 	 * Initialize the plugin.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function init() {
 		// Load plugin text domain
@@ -38,7 +38,7 @@ class Instant_Content {
 	/**
 	 * Load the plugin text domain for translation.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function load_plugin_textdomain() {
 		$domain = self::SLUG;

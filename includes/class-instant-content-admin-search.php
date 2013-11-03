@@ -18,7 +18,7 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 	/**
 	 * Hook in the methods for the search page.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function init() {
 		parent::init();
@@ -30,7 +30,7 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 	/**
 	 * Register this admin page with WordPress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function add_admin_page() {
 		$this->search_hook = add_posts_page(
@@ -48,7 +48,7 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 	/**
 	 * Render the page contents.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function display() {
 		$this->view( 'search' );
@@ -57,7 +57,7 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 	/**
 	 * Populate contextual help.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function help() {
 		$screen = get_current_screen();
@@ -79,7 +79,7 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 	/**
 	 * Add a link to Instant Content from the plugins page
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	function plugins_page_link( $links ) {
 		return array_merge(

@@ -18,7 +18,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Page hook for the search screen.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @type string
 	 */
 	protected $search_hook   = null;
@@ -26,7 +26,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Page hook for the library screen.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @type string
 	 */
 	protected $library_hook  = null;
@@ -34,7 +34,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Page hook for the settings screen.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @type string
 	 */
 	protected $settings_hook = null;
@@ -42,7 +42,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Page hook for the importer screen.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @type string
 	 */
 	protected $importer_hook = null;
@@ -50,7 +50,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Hook in the methods common to all admin pages.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function init() {
 		// Add the options page and menu item.
@@ -71,7 +71,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Register and enqueue admin-specific style sheet.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @return null Return early if not an admin page registered by this plugin.
 	 */
 	public function enqueue_admin_styles() {
@@ -86,7 +86,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Register and enqueue admin-specific JavaScript.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @return null Return early if not an admin page registered by this plugin.
 	 */
 	public function enqueue_admin_scripts() {
@@ -146,7 +146,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Keep track of the known page hooks in one place, so they are available to all instances of extended classes.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @return array Admin page hooks for this plugin.
 	 */
@@ -164,7 +164,7 @@ abstract class Instant_Content_Admin {
 	 *
 	 * Only the common sidebar is set here. The help tabs should be set in the page classes.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function help() {
 		$screen = get_current_screen();
@@ -179,7 +179,7 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Include a view file.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param  string $slug File name slug e.g. 'search'.
 	 */
@@ -190,14 +190,14 @@ abstract class Instant_Content_Admin {
 	/**
 	 * Register this admin page with WordPress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	abstract public function add_admin_page();
 
 	/**
 	 * Render the page contents.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	abstract public function display();
 

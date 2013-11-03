@@ -18,7 +18,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	/**
 	 * Hook in the methods for the settings page.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function init() {
 		parent::init();
@@ -30,7 +30,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	/**
 	 * Register this admin page with WordPress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function add_admin_page() {
 		$this->settings_hook = add_submenu_page(
@@ -51,7 +51,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	/**
 	 * Render the page contents.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function display() {
 		$this->view( 'settings' );
@@ -60,7 +60,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	/**
 	 * Populate contextual help.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function help() {
 		$screen = get_current_screen();
@@ -82,7 +82,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	/**
 	 * Make sure options are set correctly
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @param array Post data from the settings page
 	 * @return array Sanitized post form data
 	 */
@@ -175,7 +175,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	/**
 	 * Helper function for sanitizing checkboxes
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @param string checkbox value
 	 * @return string sanitized checkbox value
 	 */
@@ -190,7 +190,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	/**
 	 * Activate License
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 * @param string License key
 	 * @return string "Active" or "Inactive"
 	 */
