@@ -352,7 +352,7 @@ window['instantContentLibrary'] = {
 			statusCode: { // Swap out this statusCode for a more comprehensive fail() callback?
 				500: function() { // 500 is incorrect for unauthorised access. Fix the server to return 403.
 					// console.log('500');
-					$messageHolder.html(instantContent.invalidKey);
+					$messageHolder.html(instantContentL10n.invalidKey);
 				}
 			}
 		};
