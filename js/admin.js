@@ -18,6 +18,49 @@
 /*jslint browser: true, devel: true, indent: 4, maxerr: 50, sub: true */
 /*global jQuery, pagenow, ajaxurl, instantContent, instantContentLibrary, instantContentImporter, instantContentL10n */
 
+
+/**
+ * Holds utility functions in an object to avoid polluting global namespace.
+ *
+ * @since 1.1.0
+ *
+ * @constructor
+ */
+window['instantContent'] = {
+
+	/**
+	 * Create a URL for the API, from a given end point and an arguments object.
+	 *
+	 * @since  1.1.0
+	 *
+	 * @function
+	 *
+	 * @param  {String} endPoint The part after the base API URL.
+	 * @param  {Object} args     URL arguments object that will be sent as JSON.
+	 *
+	 * @return {String}          URL.
+	 */
+	buildApiUrl: function (endPoint, args) {
+		'use strict';
+		return instantContentL10n.apiBaseUrl + endPoint + '?json=' + JSON.stringify(args);
+	},
+
+	/**
+	 * Check if license is valid and terms have been agreed.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @return {Boolean} True if license is valid and terms have been agreed.
+	 */
+	hasValidLicenseAndTerms: function () {
+		'use strict';
+		return 'valid' === instantContentL10n.licenseStatus && instantContentL10n.terms;
+	}
+
+};
+
 /**
  * Holds search page values in an object to avoid polluting global namespace.
  *
@@ -25,7 +68,7 @@
  *
  * @constructor
  */
-window['instantContent'] = {
+window['instantContentSearch'] = {
 
 	searchPagination: jQuery('button.prev-page, button.next-page'),
 	maxItems: 20,
@@ -41,11 +84,11 @@ window['instantContent'] = {
 	searchIfPopulated: function () {
 		'use strict';
 		event.preventDefault();
-		instantContent.queryTerms = jQuery('#js-post-search-input').val();
-		if ('' === instantContent.queryTerms) {
+		instantContentSearch.queryTerms = jQuery('#js-post-search-input').val();
+		if ('' === instantContentSearch.queryTerms) {
 			return;
 		}
-		instantContent.instantSearch(0);
+		instantContentSearch.instantSearch(0);
 	},
 
 	/**
@@ -62,16 +105,16 @@ window['instantContent'] = {
 
 		var urlArgs, url, ajaxArgs, jqxhr;
 
-		instantContent.offset = offset;
+		instantContentSearch.offset = offset;
 
 		urlArgs = {
-			'query_terms': instantContent.queryTerms,
+			'query_terms': instantContentSearch.queryTerms,
 			'offset'     : offset,
-			'max_items'  : instantContent.maxItems
+			'max_items'  : instantContentSearch.maxItems
 		};
 		url = instantContent.buildApiUrl('find/article/by_text', urlArgs);
 
-		instantContent.searchPagination.prop('disabled', true);
+		instantContentSearch.searchPagination.prop('disabled', true);
 
 		jQuery('#js-results-table > tr').remove();
 		jQuery('#js-table-footer').hide();
@@ -88,10 +131,10 @@ window['instantContent'] = {
 		jqxhr = jQuery.ajax(ajaxArgs);
 
 		// On ajax success
-		jqxhr.done(instantContent.searchSuccess);
+		jqxhr.done(instantContentSearch.searchSuccess);
 
 		// On ajax error. @todo check if this is actually possible to fire on cross-domain jsonp datatype?
-		jqxhr.fail(instantContent.failedToConnect);
+		jqxhr.fail(instantContentSearch.failedToConnect);
 
 	},
 
@@ -115,13 +158,13 @@ window['instantContent'] = {
 
 		// If no results, abandon now.
 		if (data.results.length <= 0){
-			instantContent.showMessage(instantContentL10n.noResults);
+			instantContentSearch.showMessage(instantContentL10n.noResults);
 			return;
 		}
 
 		// Loop through the results and build table markup
 		jQuery.each(data.results, function() {
-			rows.push(instantContent.buildSearchResultRow(this));
+			rows.push(instantContentSearch.buildSearchResultRow(this));
 		});
 
 		// Joining first means there should only be one append of a large string, instead of lots of smaller row strings appends,
@@ -131,18 +174,18 @@ window['instantContent'] = {
 		jQuery('#js-table-footer').show();
 
 		// Remove previously set pagination bindings (if any)
-		instantContent.searchPagination.off('click.instantContent').prop('disabled', true);
+		instantContentSearch.searchPagination.off('click.instantContent').prop('disabled', true);
 
 		// @todo Fix the button titles, so it doesn't say "Go to next|previous page" when button is disabled.
 
 		// Build pagination and show if needed
-		instantContent.rebuildPagination(data);
+		instantContentSearch.rebuildPagination(data);
 	},
 
 	buildSearchResultRow: function (doc) {
 		'use strict';
 		var settingsUrl = instantContentL10n.settingsUrl,
-			previewUrl  = instantContent.buildPreviewUrl(doc['key']),
+			previewUrl  = instantContentSearch.buildPreviewUrl(doc['key']),
 			row;
 
 		row = '<tr>';
@@ -163,27 +206,6 @@ window['instantContent'] = {
 		return row;
 	},
 
-	hasValidLicenseAndTerms: function () {
-		'use strict';
-		// return false;
-		return 'valid' === instantContentL10n.licenseStatus && instantContentL10n.terms;
-	},
-
-	/**
-	 * Create a URL for the API, from a given end point and an arguments object.
-	 *
-	 * @since  1.1.0
-	 *
-	 * @param  {String} endPoint The part after the base API URL.
-	 * @param  {Object} args     URL arguments object that will be sent as JSON.
-	 *
-	 * @return {String}          URL.
-	 */
-	buildApiUrl: function (endPoint, args) {
-		'use strict';
-		return instantContentL10n.apiBaseUrl + endPoint + '?json=' + JSON.stringify(args);
-	},
-
 	buildPreviewUrl: function (articleKey) {
 		'use strict';
 		var urlArgs = {
@@ -191,6 +213,18 @@ window['instantContent'] = {
 			'license_key': instantContentL10n.license
 		};
 		return instantContent.buildApiUrl('get/article/for_preview', urlArgs);
+	},
+
+	/**
+	 * Callback for search fail.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 */
+	failedToConnect: function () {
+		'use strict';
+		instantContentSearch.showMessage(instantContentL10n.failedToConnect);
 	},
 
 	/**
@@ -210,18 +244,6 @@ window['instantContent'] = {
 	},
 
 	/**
-	 * Callback for search fail.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @function
-	 */
-	failedToConnect: function () {
-		'use strict';
-		instantContent.showMessage(instantContentL10n.failedToConnect);
-	},
-
-	/**
 	 * Build or rebuild the behaviour for the pagination feature.
 	 *
 	 * @since 0.1.0
@@ -232,18 +254,18 @@ window['instantContent'] = {
 	 */
 	rebuildPagination: function (data) {
 		'use strict';
-		if (data.count < instantContent.maxItems) {
+		if (data.count < instantContentSearch.maxItems) {
 			return;
 		}
 
 		var currentPage, totalPages;
 
 		// Update current page
-		currentPage = Math.ceil( ( (instantContent.offset / instantContent.maxItems) * 10 ) / 10) + 1;
+		currentPage = Math.ceil( ( (instantContentSearch.offset / instantContentSearch.maxItems) * 10 ) / 10) + 1;
 		jQuery('.current-page').text(currentPage);
 
 		// Update total pages @todo Doesn't need to be done when changing pages.
-		totalPages = Math.ceil( ( (data.count / instantContent.maxItems ) * 10) / 10);
+		totalPages = Math.ceil( ( (data.count / instantContentSearch.maxItems ) * 10) / 10);
 		jQuery('.total-pages').text(totalPages);
 
 		// Update number of results @todo Doesn't need to be done when changing pages.
@@ -252,14 +274,14 @@ window['instantContent'] = {
 		// Add behaviour for previous page button
 		if ( currentPage > 1 ) {
 			jQuery('.prev-page').prop('disabled', false).on('click.instantContent', function() {
-				instantContent.instantSearch(instantContent.offset - instantContent.maxItems);
+				instantContentSearch.instantSearch(instantContentSearch.offset - instantContentSearch.maxItems);
 			});
 		}
 
 		// Add behaviour for next page button
 		if ( currentPage < totalPages ) {
 			jQuery('.next-page').prop('disabled', false).on('click.instantContent', function() {
-				instantContent.instantSearch(instantContent.offset + instantContent.maxItems);
+				instantContentSearch.instantSearch(instantContentSearch.offset + instantContentSearch.maxItems);
 			});
 		}
 
@@ -307,10 +329,10 @@ window['instantContent'] = {
 		'use strict';
 
 		// Bind search button submission
-		jQuery('#js-search-submit').on('click.instantContent', instantContent.searchIfPopulated);
+		jQuery('#js-search-submit').on('click.instantContent', instantContentSearch.searchIfPopulated);
 
 		// Bind purchase button click (delegated)
-		jQuery('#js-results-table').on('click.instantContent', 'button.purchase', instantContent.purchaseContent);
+		jQuery('#js-results-table').on('click.instantContent', 'button.purchase', instantContentSearch.purchaseContent);
 
 	}
 };
@@ -364,7 +386,7 @@ window['instantContentLibrary'] = {
 		jqxhr.done(instantContentLibrary.librarySuccess);
 
 		// On ajax error. @todo check if this is actually possible to fire on cross-domain jsonp datatype?
-		jqxhr.fail(instantContent.failedToConnect);
+		jqxhr.fail(instantContentSearch.failedToConnect);
 
 	},
 
@@ -410,6 +432,18 @@ window['instantContentLibrary'] = {
 		row += '<td><button type="button" class="button import-content" data-key="' + doc['key'] + '">' + instantContentL10n.import + '</button></td>';
 		row += '</tr>';
 		return row;
+	},
+
+	/**
+	 * Callback for search fail.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 */
+	failedToConnect: function () {
+		'use strict';
+		instantContentLibrary.showMessage(instantContentL10n.failedToConnect);
 	},
 
 	showMessage: function(message) {
@@ -543,7 +577,7 @@ window['instantContentImporter'] = {
 };
 
 if (pagenow === 'posts_page_instant-content-search' ) {
-	jQuery(instantContent.ready);
+	jQuery(instantContentSearch.ready);
 } else if (pagenow === 'admin_page_instant-content-library' ) {
 	jQuery(instantContentLibrary.ready);
 } else if (pagenow === 'admin_page_instant-content-import' ) {
