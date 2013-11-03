@@ -43,20 +43,6 @@ window['instantContent'] = {
 	buildApiUrl: function (endPoint, args) {
 		'use strict';
 		return instantContentL10n.apiBaseUrl + endPoint + '?json=' + JSON.stringify(args);
-	},
-
-	/**
-	 * Check if license is valid and terms have been agreed.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @function
-	 *
-	 * @return {Boolean} True if license is valid and terms have been agreed.
-	 */
-	hasValidLicenseAndTerms: function () {
-		'use strict';
-		return 'valid' === instantContentL10n.licenseStatus && instantContentL10n.terms;
 	}
 
 };
@@ -194,7 +180,7 @@ window['instantContentSearch'] = {
 		row += '<td class="summary">' + doc['summary'] + '</td>';
 		row += '<td class="word-count">' + doc['word_count'] + '</td>';
 
-		if ( instantContent.hasValidLicenseAndTerms() ) {
+		if ( instantContentL10n.hasValidLicenseAndTerms ) {
 			row += '<td><a class="thickbox" href="' + encodeURI(previewUrl) + '&TB_iframe=true&width=800">Preview</a></td>';
 		} else {
 			row += '<td><a href="' + settingsUrl + '">' + instantContentL10n.disabled + '</a></td>';
@@ -290,7 +276,7 @@ window['instantContentSearch'] = {
 
 	purchaseContent: function (event) {
 		'use strict';
-		if ( ! instantContent.hasValidLicenseAndTerms() ) {
+		if ( ! instantContentL10n.hasValidLicenseAndTerms ) {
 			alert( instantContentL10n.enterKeyPurchase );
 			return;
 		}
@@ -361,7 +347,7 @@ window['instantContentLibrary'] = {
 		// Debug
 		console.log('Library Query: ' + url);
 
-		if (! instantContent.hasValidLicenseAndTerms()) {
+		if (! instantContentL10n.hasValidLicenseAndTerms) {
 			$messageHolder.html(instantContentL10n.enterKeyLibrary);
 			return;
 		}
