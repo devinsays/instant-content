@@ -69,8 +69,7 @@ window['instantContent'] = {
 			'offset'     : offset,
 			'max_items'  : instantContent.maxItems
 		};
-		url = instantContentL10n.apiBaseUrl + 'find/article/by_text?json=';
-		url = url + JSON.stringify(urlArgs);
+		url = instantContent.buildApiUrl('find/article/by_text', urlArgs);
 
 		instantContent.searchPagination.prop('disabled', true);
 
@@ -170,13 +169,28 @@ window['instantContent'] = {
 		return 'valid' === instantContentL10n.licenseStatus && instantContentL10n.terms;
 	},
 
+	/**
+	 * Create a URL for the API, from a given end point and an arguments object.
+	 *
+	 * @since  1.1.0
+	 *
+	 * @param  {String} endPoint The part after the base API URL.
+	 * @param  {Object} args     URL arguments object that will be sent as JSON.
+	 *
+	 * @return {String}          URL.
+	 */
+	buildApiUrl: function (endPoint, args) {
+		'use strict';
+		return instantContentL10n.apiBaseUrl + endPoint + '?json=' + JSON.stringify(args);
+	},
+
 	buildPreviewUrl: function (articleKey) {
 		'use strict';
-		var previewArgs = {
+		var urlArgs = {
 			'article_key': articleKey,
 			'license_key': instantContentL10n.license
 		};
-		return instantContentL10n.apiBaseUrl + 'get/article/for_preview?json=' + JSON.stringify(previewArgs);
+		return instantContent.buildApiUrl('get/article/for_preview', urlArgs);
 	},
 
 	/**
@@ -314,11 +328,16 @@ window['instantContentLibrary'] = {
 		'use strict';
 		var ajaxArgs,
 			jqxhr,
-			url = instantContentL10n.apiBaseUrl + 'get/article/all_purchased?json={ "license_key":"' + instantContentL10n.license + '", "offset":0, "max_items":1000}',
+			urlArgs = {
+				'license_key': instantContentL10n.license,
+				'offset'     : 0,
+				'max_items'  : 1000
+			},
+			url = instantContent.buildApiUrl('get/article/all_purchased', urlArgs),
 			$messageHolder = jQuery('.instant-content-updated p');
 
 		// Debug
-		// console.log('Library Query: ' + url);
+		console.log('Library Query: ' + url);
 
 		if (! instantContent.hasValidLicenseAndTerms()) {
 			$messageHolder.html(instantContentL10n.enterKeyLibrary);
