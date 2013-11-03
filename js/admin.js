@@ -50,7 +50,7 @@ window['instantContent'] = {
 /**
  * Holds search page values in an object to avoid polluting global namespace.
  *
- * @since 0.1.0
+ * @since 1.0.0
  *
  * @constructor
  */
@@ -63,7 +63,7 @@ window['instantContentSearch'] = {
 	/**
 	 * Check if search input is populated before doing the search.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @function
 	 */
@@ -80,11 +80,11 @@ window['instantContentSearch'] = {
 	/**
 	 * Do the search.
 	 *
-	 * @since 0.1.0
-	 *
-	 * @param  {int} data Number to start the search results from.
+	 * @since 1.0.0
 	 *
 	 * @function
+	 *
+	 * @param  {Number} offset Number to start the search results from.
 	 */
 	instantSearch: function (offset) {
 		'use strict';
@@ -127,11 +127,11 @@ window['instantContentSearch'] = {
 	/**
 	 * Handle search results when considered a succesful ajax call.
 	 *
-	 * @since 0.1.0
-	 *
-	 * @param  {obj} data Response object.
+	 * @since 1.0.0
 	 *
 	 * @function
+	 *
+	 * @param  {Object} data Response object.
 	 */
 	searchSuccess: function (data) {
 		'use strict';
@@ -168,6 +168,17 @@ window['instantContentSearch'] = {
 		instantContentSearch.rebuildPagination(data);
 	},
 
+	/**
+	 * Assemble the markup for a single table row for the search results.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @param  {String[]} doc An array of document properties.
+	 *
+	 * @return {String}       Table row markup.
+	 */
 	buildSearchResultRow: function (doc) {
 		'use strict';
 		var settingsUrl = instantContentL10n.settingsUrl,
@@ -192,6 +203,17 @@ window['instantContentSearch'] = {
 		return row;
 	},
 
+	/**
+	 * Build a URL for the API to preview a document.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @param  {Number} articleKey Article unique ID.
+	 *
+	 * @return {String}            URL.
+	 */
 	buildPreviewUrl: function (articleKey) {
 		'use strict';
 		var urlArgs = {
@@ -218,11 +240,11 @@ window['instantContentSearch'] = {
 	 *
 	 * Currently shows the message inside the table, but this could be moved to outside the table if necessary.
 	 *
-	 * @since 0.1.0
-	 *
-	 * @param  {string} message Message to show.
+	 * @since 1.0.0
 	 *
 	 * @function
+	 *
+	 * @param  {String} message Message to show.
 	 */
 	showMessage: function (message) {
 		'use strict';
@@ -232,11 +254,11 @@ window['instantContentSearch'] = {
 	/**
 	 * Build or rebuild the behaviour for the pagination feature.
 	 *
-	 * @since 0.1.0
-	 *
-	 * @param  {obj} data Ajax response object.
+	 * @since 1.0.0
 	 *
 	 * @function
+	 *
+	 * @param  {Object} data Ajax response object.
 	 */
 	rebuildPagination: function (data) {
 		'use strict';
@@ -274,6 +296,15 @@ window['instantContentSearch'] = {
 		jQuery('.tablenav-pages').show();
 	},
 
+	/**
+	 * Update the purchase form with values before submitting.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
 	purchaseContent: function (event) {
 		'use strict';
 		if ( ! instantContentL10n.hasValidLicenseAndTerms ) {
@@ -307,7 +338,7 @@ window['instantContentSearch'] = {
 	 * followed by stuff that triggers an event only on user interaction. This
 	 * keeps any screen jumping from occuring later on.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @function
 	 */
@@ -326,12 +357,19 @@ window['instantContentSearch'] = {
 /**
  * Holds library page values in an object to avoid polluting global namespace.
  *
- * @since 0.1.0
+ * @since 1.0.0
  *
  * @constructor
  */
 window['instantContentLibrary'] = {
 
+	/**
+	 * Load the library contents.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 */
 	lookup: function() {
 		'use strict';
 		var ajaxArgs,
@@ -345,7 +383,7 @@ window['instantContentLibrary'] = {
 			$messageHolder = jQuery('.instant-content-updated p');
 
 		// Debug
-		console.log('Library Query: ' + url);
+		// console.log('Library Query: ' + url);
 
 		if (! instantContentL10n.hasValidLicenseAndTerms) {
 			$messageHolder.html(instantContentL10n.enterKeyLibrary);
@@ -376,6 +414,15 @@ window['instantContentLibrary'] = {
 
 	},
 
+	/**
+	 * Callback for library look up success.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @param  {Object} data Response object.
+	 */
 	librarySuccess: function(data) {
 		'use strict';
 		var rows = [];
@@ -406,6 +453,17 @@ window['instantContentLibrary'] = {
 		instantContentLibrary.showMessage(instantContentL10n.libraryLoaded);
 	},
 
+	/**
+	 * Assemble markup for a single row of the library table.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @param  {String[]} doc An array of document properties.
+	 *
+	 * @return {String}       Table row markup.
+	 */
 	buildLibraryResultRow: function(doc) {
 		'use strict';
 		var row,
@@ -432,11 +490,29 @@ window['instantContentLibrary'] = {
 		instantContentLibrary.showMessage(instantContentL10n.failedToConnect);
 	},
 
+	/**
+	 * Used to show a message.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @param  {String} message Message to show.
+	 */
 	showMessage: function(message) {
 		'use strict';
 		jQuery('.instant-content-updated p').html(message);
 	},
 
+	/**
+	 * Update the import form before submitting it.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
 	importContent: function(event) {
 		'use strict';
 		jQuery('#js-instant-content-import-key').val( jQuery(event.target).data('key') );
@@ -451,7 +527,7 @@ window['instantContentLibrary'] = {
 	 * followed by stuff that triggers an event only on user interaction. This
 	 * keeps any screen jumping from occuring later on.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @function
 	 */
@@ -469,15 +545,21 @@ window['instantContentLibrary'] = {
 /**
  * Holds importer page values in an object to avoid polluting global namespace.
  *
- * @since 0.1.0
+ * @since 1.0.0
  *
  * @constructor
  */
 window['instantContentImporter'] = {
 
+	/**
+	 * Initialise the importer on page load to grab the data for a specific document.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 */
 	initiateImporter: function() {
 		'use strict';
-		console.log(jQuery('#js-instant-content-import-key').val());
 		var jqxhr,
 			ajaxArgs = {
 				type    : 'POST',
@@ -500,6 +582,15 @@ window['instantContentImporter'] = {
 		jqxhr.fail(instantContentImporter.importContentFail);
 	},
 
+	/**
+	 * Callback for import success.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @function
+	 *
+	 * @param  {Object} data Response object.
+	 */
 	importContentSuccess: function (data) {
 		'use strict';
 		instantContentImporter.displayFeedback(data);
@@ -510,22 +601,22 @@ window['instantContentImporter'] = {
 	 *
 	 * @todo This needs some love.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @function
 	 */
 	importContentFail: function(errorThrown) {
 		'use strict';
-		console.log('errorThrown');
-		console.log(errorThrown);
+		// console.log('errorThrown');
+		// console.log(errorThrown);
 	},
 
 	/**
 	 * If JSON is returned from the import initialise call, update the importer screen.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
-	 * @param  {obj} data Response object.
+	 * @param  {Object} data Response object.
 	 *
 	 * @function
 	 */
@@ -550,7 +641,7 @@ window['instantContentImporter'] = {
 	 * followed by stuff that triggers an event only on user interaction. This
 	 * keeps any screen jumping from occuring later on.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @function
 	 */
