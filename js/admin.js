@@ -89,16 +89,11 @@ window['instantContentSearch'] = {
 	instantSearch: function (offset) {
 		'use strict';
 
-		var urlArgs, url, ajaxArgs, jqxhr;
+		var url, ajaxArgs, jqxhr;
 
 		instantContentSearch.offset = offset;
 
-		urlArgs = {
-			'query_terms': instantContentSearch.queryTerms,
-			'offset'     : offset,
-			'max_items'  : instantContentSearch.maxItems
-		};
-		url = instantContent.buildApiUrl('find/article/by_text', urlArgs);
+		url = instantCont.buildSearchUrl(offset);
 
 		instantContentSearch.searchPagination.prop('disabled', true);
 
@@ -122,6 +117,27 @@ window['instantContentSearch'] = {
 		// On ajax error. @todo check if this is actually possible to fire on cross-domain jsonp datatype?
 		jqxhr.fail(instantContentSearch.failedToConnect);
 
+	},
+
+	/**
+	 * Build a URL for the API to search a document.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @function
+	 *
+	 * @param  {Number} offset Number to start the search results from.
+	 *
+	 * @return {String}            URL.
+	 */
+	buildSearchUrl: function (offset) {
+		'use strict';
+		var urlArgs = {
+			'query_terms': instantContentSearch.queryTerms,
+			'offset'     : offset,
+			'max_items'  : instantContentSearch.maxItems
+		};
+		return instantContent.buildApiUrl('find/article/by_text', urlArgs);
 	},
 
 	/**
@@ -374,12 +390,6 @@ window['instantContentLibrary'] = {
 		'use strict';
 		var ajaxArgs,
 			jqxhr,
-			urlArgs = {
-				'license_key': instantContentL10n.license,
-				'offset'     : 0,
-				'max_items'  : 1000
-			},
-			url = instantContent.buildApiUrl('get/article/all_purchased', urlArgs),
 			$messageHolder = jQuery('.instant-content-updated p');
 
 		// Debug
@@ -392,7 +402,7 @@ window['instantContentLibrary'] = {
 
 		ajaxArgs = {
 			name: 'all_purchased',
-			url: url,
+			url: instantContentLibrary.buildLookupUrl(),
 			timeout: 5000,
 			dataType : 'jsonp',
 			statusCode: { // Swap out this statusCode for a more comprehensive fail() callback?
@@ -412,6 +422,25 @@ window['instantContentLibrary'] = {
 		// On ajax error. @todo check if this is actually possible to fire on cross-domain jsonp datatype?
 		jqxhr.fail(instantContentLibrary.failedToConnect);
 
+	},
+
+	/**
+	 * Build a URL for the API to load the library contents.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @function
+	 *
+	 * @return {String} URL.
+	 */
+	buildLookupUrl: function() {
+		'use strict';
+		var urlArgs = {
+			'license_key': instantContentL10n.license,
+			'offset'     : 0,
+			'max_items'  : 1000
+		};
+		return instantContent.buildApiUrl('get/article/all_purchased', urlArgs);
 	},
 
 	/**
