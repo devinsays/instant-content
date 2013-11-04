@@ -65,7 +65,7 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 	public function help() {
 		$screen = get_current_screen();
 		$search_help =
-			'<p>'  . __( 'To find articles available for purchase in the Instant Content library, enter keywords to the search field and click "Search for Articles".  There are 150,000+ articles available for sale, but not all keywords will return results.', 'instant-content' ) . '</p>' .
+			'<p>'  . __( 'To find articles available for purchase in the Instant Content library, enter keywords into the search field and click "Search for Articles".  There are 150,000+ articles available for sale, but not all keywords will return results.', 'instant-content' ) . '</p>' .
 			'<p>'  . __( 'Please note, you will not be able to purchase any content or view the article previews until you have entered a valid license key on the settings page.', 'instant-content' ) . '</p>';
 
 		$screen->add_help_tab(
