@@ -24,7 +24,10 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 		parent::init();
 
 		// Add link from plugins page
-		add_filter( 'plugin_action_links', array( $this, 'plugins_page_link' ) );
+		add_filter(
+			'plugin_action_links_' . Instant_Content::SLUG . '/' . Instant_Content::SLUG . '.php',
+			array( $this, 'plugins_page_link' )
+		);
 	}
 
 	/**
