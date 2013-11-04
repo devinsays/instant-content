@@ -51,7 +51,8 @@ class Instant_Content_Admin_Library extends Instant_Content_Admin {
 	public function help() {
 		$screen = get_current_screen();
 		$library_help =
-			'<p>'  . __( 'Some help text here about what is shown on this library page.', 'instant-content' ) . '</p>';
+			'<p>'  . __( 'This screen shows all the articles purchased with the current Instant Content license key.  Refresh if you\'re most recent purchase has not shown up yet.' ) . '</p>' .
+			'<p>'  . __( 'Click the "Import" button to import the content as a new draft post.' ) . '</p>';
 
 		$screen->add_help_tab(
 			array(
