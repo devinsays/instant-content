@@ -93,7 +93,7 @@ window['instantContentSearch'] = {
 
 		instantContentSearch.offset = offset;
 
-		url = instantCont.buildSearchUrl(offset);
+		url = instantContentSearch.buildSearchUrl(offset);
 
 		instantContentSearch.searchPagination.prop('disabled', true);
 
