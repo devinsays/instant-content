@@ -126,7 +126,7 @@ abstract class Instant_Content_Admin {
 			'settingsUrl'             => menu_page_url( Instant_Content::SLUG . '-settings', false ),
 
 			// Library
-			'libraryLoaded'           => __( 'Library loaded.', 'instant-content' ),
+			'libraryLoaded'           => __( 'Library loaded.  New purchases may take a few minutes to appear.', 'instant-content' ),
 			'import'                  => __( 'Import', 'instant-content' ),
 			'invalidKey'              => __( 'License key is invalid.', 'instant-content' ),
 			'enterKeyLibrary'         => __( 'Please enter a valid license key to view purchased content.', 'instant-content' ),
