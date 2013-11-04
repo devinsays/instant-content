@@ -59,7 +59,7 @@
 						<p><label class="description" for="instant_content[license]">
 						<?php if ( $status == 'valid' ) {
 							_e( 'Your license is valid.', 'instant-content' );
-						} if ( $status == 'error' ) {
+						} elseif ( $status == 'error' ) {
 							_e( 'There was an error validating the license.  Try saving again.', 'instant-content' );
 						} else {
 							printf(
