@@ -18,7 +18,7 @@ class Instant_Content_Admin_Library extends Instant_Content_Admin {
 	/**
 	 * Register this admin page with WordPress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function add_admin_page() {
 		$this->library_hook = add_submenu_page(
@@ -37,7 +37,7 @@ class Instant_Content_Admin_Library extends Instant_Content_Admin {
 	/**
 	 * Render the page contents.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function display() {
 		$this->view( 'library' );
@@ -46,7 +46,7 @@ class Instant_Content_Admin_Library extends Instant_Content_Admin {
 	/**
 	 * Populate contextual help.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function help() {
 		$screen = get_current_screen();

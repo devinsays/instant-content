@@ -20,7 +20,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Hook in the methods for the importer page.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function init() {
 		parent::init();
@@ -32,7 +32,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Register this admin page with WordPress.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function add_admin_page() {
 		$this->importer_hook = add_submenu_page(
@@ -51,7 +51,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Render the page contents.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function display() {
 		$this->view( 'import' );
@@ -60,7 +60,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Populate contextual help.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function help() {
 		$screen = get_current_screen();
@@ -82,7 +82,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Assemble post data from API and inserts the new draft post.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 */
 	public function instant_content_import() {
 		if ( ! isset( $_POST['key'], $_POST['license'] ) ) {
@@ -146,7 +146,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Fetch content from the API.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string Article key.
 	 * @param string Instant Content license key.
@@ -176,7 +176,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Get the URL for fetching the content.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param  string $key     Article key.
 	 * @param  string $license Instant Content license key.
@@ -184,7 +184,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	 * @return string          URL
 	 */
 	function get_content_fetch_url( $key, $license ) {
-		$api = 'http://icstage.demandstudios.com/instant_content/get/article/content?json=';
+		$api = Instant_Content::API_BASE_URL . 'get/article/content?json=';
 		$url_args = array(
 			'article_key' => $key,
 			'license_key' => $license
@@ -195,7 +195,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Loops through $data returned from API to built post body
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array Article data.
 	 * @param string Type of template (currently not used).
@@ -233,7 +233,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Build paragraph.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param  string $summary Content summary.
 	 *
@@ -249,7 +249,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Wrap a title in chosen heading markup.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param  string $title Content title or subtitle.
 	 *
@@ -303,7 +303,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Return content in list formatted markup.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param array Article data to be formatted as a list.
 	 * @param string Title for the markup section.
@@ -328,7 +328,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	/**
 	 * Maybe wrap content in a link, if the link is non-empty.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param  [type] $content [description]
 	 * @param  [type] $link    [description]
@@ -347,7 +347,7 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	 * Images imports have been disabled in the API because of licensing issues
 	 * but code has been kept in the hope we'll be able to add images later.
 	 *
-	 * @since 0.1.0
+	 * @since 1.0.0
 	 *
 	 * @param string File URL.
 	 * @param number Post ID that image will be attached to.
