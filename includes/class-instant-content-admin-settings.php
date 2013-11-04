@@ -114,6 +114,9 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 				// If new license is a valid length, activate it
 				if ( 32 === strlen( $input['license'] ) ) {
 					$output['license_status'] = $this->activate_license( $input['license'] );
+					if ( 'valid' != $output['license_status'] ) {
+						$output['license_status'] = 'error';
+					}
 				}
 
 			}
