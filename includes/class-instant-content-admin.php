@@ -176,7 +176,7 @@ abstract class Instant_Content_Admin {
 		// Add help sidebar
 		$screen->set_help_sidebar(
 			'<p><strong>' . __( 'For more information:', 'instant-content' ) . '</strong></p>' .
-			'<p><a href="http://instantcontent.me" target="_blank" title="' . esc_attr__( 'Get Support', 'instant-content' ) . '">' . __( 'Get Support', 'instant-content' ) . '</a></p>'
+			'<p><a href="http://www.instantcontent.me/contact" target="_blank" title="' . esc_attr__( 'Get Support', 'instant-content' ) . '">' . __( 'Get Support', 'instant-content' ) . '</a></p>'
 		);
 	}
 
