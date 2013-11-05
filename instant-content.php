@@ -57,7 +57,7 @@ $instant_content_admin_settings = new Instant_Content_Admin_Settings;
 $instant_content_admin_settings->init();
 
 // Constants used for plugin updates
-define( 'INSTANT_CONTENT_UPDATE_URL', 'http://www.instantcontent.me' );
+define( 'INSTANT_CONTENT_UPDATE_URL', 'http://www.instantcontent.me/' );
 define( 'INSTANT_CONTENT_PLUGIN', 'Instant Content' );
 
 // Load the updater class
