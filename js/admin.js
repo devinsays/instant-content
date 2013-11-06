@@ -15,9 +15,7 @@
 // ==/ClosureCompiler==
 // http://closure-compiler.appspot.com/home
 
-/*jslint browser: true, devel: true, indent: 4, maxerr: 50, sub: true */
-/*global jQuery, pagenow, ajaxurl, instantContent, instantContentLibrary, instantContentImporter, instantContentL10n */
-
+/*global jQuery, pagenow, ajaxurl, instantContent, instantContentSearch, instantContentLibrary, instantContentImporter, instantContentL10n*/
 
 /**
  * Holds utility functions in an object to avoid polluting global namespace.
@@ -26,7 +24,7 @@
  *
  * @constructor
  */
-window['instantContent'] = {
+window[ 'instantContent' ] = {
 
 	/**
 	 * Create a URL for the API, from a given end point and an arguments object.
@@ -40,9 +38,9 @@ window['instantContent'] = {
 	 *
 	 * @return {String}          URL.
 	 */
-	buildApiUrl: function (endPoint, args) {
+	buildApiUrl: function( endPoint, args ) {
 		'use strict';
-		return instantContentL10n.apiBaseUrl + endPoint + '?json=' + JSON.stringify(args);
+		return instantContentL10n.apiBaseUrl + endPoint + '?json=' + JSON.stringify( args );
 	}
 
 };
@@ -54,9 +52,9 @@ window['instantContent'] = {
  *
  * @constructor
  */
-window['instantContentSearch'] = {
+window[ 'instantContentSearch' ] = {
 
-	searchPagination: jQuery('button.prev-page, button.next-page'),
+	searchPagination: jQuery( 'button.prev-page, button.next-page' ),
 	maxItems: 20,
 	offset: 0,
 
@@ -67,14 +65,14 @@ window['instantContentSearch'] = {
 	 *
 	 * @function
 	 */
-	searchIfPopulated: function () {
+	searchIfPopulated: function() {
 		'use strict';
 		event.preventDefault();
-		instantContentSearch.queryTerms = jQuery('#js-post-search-input').val();
-		if ('' === instantContentSearch.queryTerms) {
+		instantContentSearch.queryTerms = jQuery( '#js-post-search-input' ).val();
+		if ( '' === instantContentSearch.queryTerms ) {
 			return;
 		}
-		instantContentSearch.instantSearch(0);
+		instantContentSearch.instantSearch( 0 );
 	},
 
 	/**
@@ -86,36 +84,36 @@ window['instantContentSearch'] = {
 	 *
 	 * @param  {Number} offset Number to start the search results from.
 	 */
-	instantSearch: function (offset) {
+	instantSearch: function( offset ) {
 		'use strict';
 
 		var url, ajaxArgs, jqxhr;
 
 		instantContentSearch.offset = offset;
 
-		url = instantContentSearch.buildSearchUrl(offset);
+		url = instantContentSearch.buildSearchUrl( offset );
 
-		instantContentSearch.searchPagination.prop('disabled', true);
+		instantContentSearch.searchPagination.prop( 'disabled', true );
 
-		jQuery('#js-results-table > tr').remove();
-		jQuery('#js-table-footer').hide();
-		jQuery('#js-results-table').append('<tr><td colspan="6">' + instantContentL10n.loading + '</td></tr>');
+		jQuery( '#js-results-table > tr' ).remove();
+		jQuery( '#js-table-footer' ).hide();
+		jQuery( '#js-results-table' ).append( '<tr><td colspan="6">' + instantContentL10n.loading + '</td></tr>' );
 
 		ajaxArgs = {
-			name    : 'by_text',
-			url     : url,
+			name: 'by_text',
+			url: url,
 			dataType: 'jsonp',
-			timeout : 60000
+			timeout: 60000
 		};
 
 		// Do the ajax call. Need .ajax() and not .get() as timeout property is set.
-		jqxhr = jQuery.ajax(ajaxArgs);
+		jqxhr = jQuery.ajax( ajaxArgs );
 
 		// On ajax success
-		jqxhr.done(instantContentSearch.searchSuccess);
+		jqxhr.done( instantContentSearch.searchSuccess );
 
 		// On ajax error. @todo check if this is actually possible to fire on cross-domain jsonp datatype?
-		jqxhr.fail(instantContentSearch.failedToConnect);
+		jqxhr.fail( instantContentSearch.failedToConnect );
 
 	},
 
@@ -130,14 +128,14 @@ window['instantContentSearch'] = {
 	 *
 	 * @return {String}            URL.
 	 */
-	buildSearchUrl: function (offset) {
+	buildSearchUrl: function( offset ) {
 		'use strict';
 		var urlArgs = {
-			'query_terms': instantContentSearch.queryTerms,
-			'offset'     : offset,
-			'max_items'  : instantContentSearch.maxItems
+			query_terms: instantContentSearch.queryTerms,
+			offset: offset,
+			max_items: instantContentSearch.maxItems
 		};
-		return instantContent.buildApiUrl('find/article/by_text', urlArgs);
+		return instantContent.buildApiUrl( 'find/article/by_text', urlArgs );
 	},
 
 	/**
@@ -149,39 +147,39 @@ window['instantContentSearch'] = {
 	 *
 	 * @param  {Object} data Response object.
 	 */
-	searchSuccess: function (data) {
+	searchSuccess: function( data ) {
 		'use strict';
 
 		var rows = [];
 
 		// Hide pagination, and clear existing result rows
-		jQuery('.tablenav-pages').hide();
-		jQuery('#js-results-table > tr').remove();
+		jQuery( '.tablenav-pages' ).hide();
+		jQuery( '#js-results-table > tr' ).remove();
 
 		// If no results, abandon now.
-		if (data.results.length <= 0){
-			instantContentSearch.showMessage(instantContentL10n.noResults);
+		if ( data.results.length <= 0 ) {
+			instantContentSearch.showMessage( instantContentL10n.noResults );
 			return;
 		}
 
 		// Loop through the results and build table markup
-		jQuery.each(data.results, function() {
-			rows.push(instantContentSearch.buildSearchResultRow(this));
+		jQuery.each( data.results, function() {
+			rows.push( instantContentSearch.buildSearchResultRow( this ) );
 		});
 
 		// Joining first means there should only be one append of a large string, instead of lots of smaller row strings appends,
 		// which is better for performance.
-		jQuery('#js-results-table').append(rows.join(''));
+		jQuery( '#js-results-table' ).append( rows.join( '' ) );
 
-		jQuery('#js-table-footer').show();
+		jQuery( '#js-table-footer' ).show();
 
 		// Remove previously set pagination bindings (if any)
-		instantContentSearch.searchPagination.off('click.instantContent').prop('disabled', true);
+		instantContentSearch.searchPagination.off( 'click.instantContent' ).prop( 'disabled', true );
 
 		// @todo Fix the button titles, so it doesn't say "Go to next|previous page" when button is disabled.
 
 		// Build pagination and show if needed
-		instantContentSearch.rebuildPagination(data);
+		instantContentSearch.rebuildPagination( data );
 	},
 
 	/**
@@ -191,30 +189,30 @@ window['instantContentSearch'] = {
 	 *
 	 * @function
 	 *
-	 * @param  {String[]} doc An array of document properties.
+	 * @param  {Object} doc Document.
 	 *
-	 * @return {String}       Table row markup.
+	 * @return {String}     Table row markup.
 	 */
-	buildSearchResultRow: function (doc) {
+	buildSearchResultRow: function( doc ) {
 		'use strict';
 		var settingsUrl = instantContentL10n.settingsUrl,
-			previewUrl  = instantContentSearch.buildPreviewUrl(doc['key']),
+			previewUrl  = instantContentSearch.buildPreviewUrl( doc.key ),
 			row;
 
 		row = '<tr>';
 		row += '<td></td>';
-		row += '<td class="title">' + doc['title'] + '</td>';
-		row += '<td class="summary">' + doc['summary'] + '</td>';
-		row += '<td class="word-count">' + doc['word_count'] + '</td>';
+		row += '<td class="title">' + doc.title + '</td>';
+		row += '<td class="summary">' + doc.summary + '</td>';
+		row += '<td class="word-count">' + doc.word_count + '</td>';
 
 		if ( instantContentL10n.hasValidLicenseAndTerms ) {
-			row += '<td><a class="thickbox" href="' + encodeURI(previewUrl) + '&TB_iframe=true&width=800">Preview</a></td>';
+			row += '<td><a class="thickbox" href="' + encodeURI( previewUrl ) + '&TB_iframe=true&width=800">Preview</a></td>';
 		} else {
 			row += '<td><a href="' + settingsUrl + '">' + instantContentL10n.disabled + '</a></td>';
 		}
 
-		row += '<td class="price">$ ' + doc['price'] + '</td>';
-		row += '<td><button type="button" class="button purchase" data-title="' + doc['title'] + '" data-price="' + doc['price'] + '" data-key="' + doc['key'] + '">' + instantContentL10n.purchase + '</a></td>';
+		row += '<td class="price">$ ' + doc.price + '</td>';
+		row += '<td><button type="button" class="button purchase" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.purchase + '</a></td>';
 		row += '</tr>';
 		return row;
 	},
@@ -230,13 +228,13 @@ window['instantContentSearch'] = {
 	 *
 	 * @return {String}            URL.
 	 */
-	buildPreviewUrl: function (articleKey) {
+	buildPreviewUrl: function( articleKey ) {
 		'use strict';
 		var urlArgs = {
-			'article_key': articleKey,
-			'license_key': instantContentL10n.license
+			article_key: articleKey,
+			license_key: instantContentL10n.license
 		};
-		return instantContent.buildApiUrl('get/article/for_preview', urlArgs);
+		return instantContent.buildApiUrl( 'get/article/for_preview', urlArgs );
 	},
 
 	/**
@@ -246,9 +244,9 @@ window['instantContentSearch'] = {
 	 *
 	 * @function
 	 */
-	failedToConnect: function () {
+	failedToConnect: function() {
 		'use strict';
-		instantContentSearch.showMessage(instantContentL10n.failedToConnect);
+		instantContentSearch.showMessage( instantContentL10n.failedToConnect );
 	},
 
 	/**
@@ -262,9 +260,10 @@ window['instantContentSearch'] = {
 	 *
 	 * @param  {String} message Message to show.
 	 */
-	showMessage: function (message) {
+	showMessage: function( message ) {
 		'use strict';
-		jQuery('#js-results-table').append('<tr><td class="no-border"></td><td colspan="2" class="no-border">' + message + '</td></tr>');
+		jQuery( '#js-results-table' )
+			.append( '<tr><td class="no-border"></td><td colspan="2" class="no-border">' + message + '</td></tr>' );
 	},
 
 	/**
@@ -276,40 +275,40 @@ window['instantContentSearch'] = {
 	 *
 	 * @param  {Object} data Ajax response object.
 	 */
-	rebuildPagination: function (data) {
+	rebuildPagination: function( data ) {
 		'use strict';
-		if (data.count < instantContentSearch.maxItems) {
+		if ( data.count < instantContentSearch.maxItems ) {
 			return;
 		}
 
 		var currentPage, totalPages;
 
 		// Update current page
-		currentPage = Math.ceil( ( (instantContentSearch.offset / instantContentSearch.maxItems) * 10 ) / 10) + 1;
-		jQuery('.current-page').text(currentPage);
+		currentPage = Math.ceil( ( ( instantContentSearch.offset /  instantContentSearch.maxItems ) * 10  ) / 10 ) + 1;
+		jQuery( '.current-page' ).text( currentPage );
 
 		// Update total pages @todo Doesn't need to be done when changing pages.
-		totalPages = Math.ceil( ( (data.count / instantContentSearch.maxItems ) * 10) / 10);
-		jQuery('.total-pages').text(totalPages);
+		totalPages = Math.ceil( ( ( data.count / instantContentSearch.maxItems ) * 10 ) / 10 );
+		jQuery( '.total-pages' ).text( totalPages );
 
 		// Update number of results @todo Doesn't need to be done when changing pages.
-		jQuery('.displaying-num').text(data.count + ' ' + instantContentL10n['items']);
+		jQuery( '.displaying-num' ).text( data.count + ' ' + instantContentL10n[ 'items' ] );
 
 		// Add behaviour for previous page button
 		if ( currentPage > 1 ) {
-			jQuery('.prev-page').prop('disabled', false).on('click.instantContent', function() {
-				instantContentSearch.instantSearch(instantContentSearch.offset - instantContentSearch.maxItems);
+			jQuery( '.prev-page' ).prop( 'disabled', false ).on( 'click.instantContent', function() {
+				instantContentSearch.instantSearch( instantContentSearch.offset - instantContentSearch.maxItems );
 			});
 		}
 
 		// Add behaviour for next page button
 		if ( currentPage < totalPages ) {
-			jQuery('.next-page').prop('disabled', false).on('click.instantContent', function() {
-				instantContentSearch.instantSearch(instantContentSearch.offset + instantContentSearch.maxItems);
+			jQuery( '.next-page' ).prop( 'disabled', false ).on( 'click.instantContent', function() {
+				instantContentSearch.instantSearch( instantContentSearch.offset + instantContentSearch.maxItems );
 			});
 		}
 
-		jQuery('.tablenav-pages').show();
+		jQuery( '.tablenav-pages' ).show();
 	},
 
 	/**
@@ -321,28 +320,28 @@ window['instantContentSearch'] = {
 	 *
 	 * @param  {jQuery.event} event
 	 */
-	purchaseContent: function (event) {
+	purchaseContent: function( event ) {
 		'use strict';
-		if ( ! instantContentL10n.hasValidLicenseAndTerms ) {
+		if ( !instantContentL10n.hasValidLicenseAndTerms ) {
 			alert( instantContentL10n.enterKeyPurchase );
 			return;
 		}
 
 		var custom,
-			title = jQuery(event.target).data('title'),
+			title = jQuery( event.target ).data( 'title' ),
 			confirmText = instantContentL10n.aboutToPurchase + ' "' + title + '".\n\n' + instantContentL10n.takenToPayPal + '\n\n' + instantContentL10n.clickOk;
 
-		if (confirm(confirmText)) {
+		if ( confirm( confirmText ) ) {
 			// @todo Change cancel_return link so that it can return to the search screen with query terms already re-run?
-			jQuery('#js-paypal-item-name').val(title);
-			jQuery('#js-paypal-item-amount').val( jQuery(event.target).attr('data-price') );
+			jQuery( '#js-paypal-item-name' ).val( title );
+			jQuery( '#js-paypal-item-amount' ).val( jQuery( event.target ).attr( 'data-price' ) );
 			custom = {
-				'article_keys'    : [jQuery(event.target).data('key').toString()],
-				'license_key'     : instantContentL10n.license,
-				'purchaser_domain': instantContentL10n.referrer
+				article_keys: [ jQuery( event.target ).data( 'key' ).toString() ],
+				license_key: instantContentL10n.license,
+				purchaser_domain: instantContentL10n.referrer
 			};
-			jQuery('#js-paypal-item-custom').val( JSON.stringify(custom) );
-			jQuery('#js-instant-content').trigger('submit');
+			jQuery( '#js-paypal-item-custom' ).val( JSON.stringify( custom ) );
+			jQuery( '#js-instant-content' ).trigger( 'submit' );
 		}
 	},
 
@@ -362,10 +361,10 @@ window['instantContentSearch'] = {
 		'use strict';
 
 		// Bind search button submission
-		jQuery('#js-search-submit').on('click.instantContent', instantContentSearch.searchIfPopulated);
+		jQuery( '#js-search-submit' ).on( 'click.instantContent', instantContentSearch.searchIfPopulated );
 
 		// Bind purchase button click (delegated)
-		jQuery('#js-results-table').on('click.instantContent', 'button.purchase', instantContentSearch.purchaseContent);
+		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.purchase', instantContentSearch.purchaseContent );
 
 	}
 };
@@ -377,7 +376,7 @@ window['instantContentSearch'] = {
  *
  * @constructor
  */
-window['instantContentLibrary'] = {
+window[ 'instantContentLibrary' ] = {
 
 	/**
 	 * Load the library contents.
@@ -390,13 +389,13 @@ window['instantContentLibrary'] = {
 		'use strict';
 		var ajaxArgs,
 			jqxhr,
-			$messageHolder = jQuery('.instant-content-updated p');
+			$messageHolder = jQuery( '.instant-content-updated p' );
 
 		// Debug
-		// console.log('Library Query: ' + url);
+		// console.log( 'Library Query: ' + url );
 
-		if (! instantContentL10n.hasValidLicenseAndTerms) {
-			$messageHolder.html(instantContentL10n.enterKeyLibrary);
+		if ( !instantContentL10n.hasValidLicenseAndTerms ) {
+			$messageHolder.html( instantContentL10n.enterKeyLibrary );
 			return;
 		}
 
@@ -404,23 +403,23 @@ window['instantContentLibrary'] = {
 			name: 'all_purchased',
 			url: instantContentLibrary.buildLookupUrl(),
 			timeout: 5000,
-			dataType : 'jsonp',
+			dataType: 'jsonp',
 			statusCode: { // Swap out this statusCode for a more comprehensive fail() callback?
 				500: function() { // 500 is incorrect for unauthorised access. Fix the server to return 403.
-					// console.log('500');
-					$messageHolder.html(instantContentL10n.invalidKey);
+					// console.log( '500' );
+					$messageHolder.html( instantContentL10n.invalidKey );
 				}
 			}
 		};
 
 		// Do the ajax call. Need .ajax() and not .get() as timeout property is set.
-		jqxhr = jQuery.ajax(ajaxArgs);
+		jqxhr = jQuery.ajax( ajaxArgs );
 
 		// On ajax success
-		jqxhr.done(instantContentLibrary.librarySuccess);
+		jqxhr.done( instantContentLibrary.librarySuccess );
 
 		// On ajax error. @todo check if this is actually possible to fire on cross-domain jsonp datatype?
-		jqxhr.fail(instantContentLibrary.failedToConnect);
+		jqxhr.fail( instantContentLibrary.failedToConnect );
 
 	},
 
@@ -436,11 +435,11 @@ window['instantContentLibrary'] = {
 	buildLookupUrl: function() {
 		'use strict';
 		var urlArgs = {
-			'license_key': instantContentL10n.license,
-			'offset'     : 0,
-			'max_items'  : 1000
+			license_key: instantContentL10n.license,
+			offset: 0,
+			max_items: 1000
 		};
-		return instantContent.buildApiUrl('get/article/all_purchased', urlArgs);
+		return instantContent.buildApiUrl( 'get/article/all_purchased', urlArgs );
 	},
 
 	/**
@@ -452,34 +451,34 @@ window['instantContentLibrary'] = {
 	 *
 	 * @param  {Object} data Response object.
 	 */
-	librarySuccess: function(data) {
+	librarySuccess: function( data ) {
 		'use strict';
 		var rows = [];
 
-		jQuery('#js-results-table > tr').remove();
+		jQuery( '#js-results-table > tr' ).remove();
 
 		if ( data.results.length <= 0) {
-			instantContentLibrary.showMessage(instantContentL10n.noPurchases);
+			instantContentLibrary.showMessage( instantContentL10n.noPurchases );
 			return;
 		}
 
 		// Update and show pagination
-		jQuery('.displaying-num').text(data.results.length + ' / ' + data.count + ' ' + instantContentL10n['items']);
-		jQuery('.pagination-links').hide(); // Temporarily hide the pagination buttons, as these aren't working yet
-		jQuery('.tablenav-pages').show();
+		jQuery( '.displaying-num' ).text( data.results.length + ' / ' + data.count + ' ' + instantContentL10n[ 'items' ] );
+		jQuery( '.pagination-links' ).hide(); // Temporarily hide the pagination buttons, as these aren't working yet
+		jQuery( '.tablenav-pages' ).show();
 
 		// Loop through the results and build table markup
-		jQuery.each(data.results, function() {
-			rows.push(instantContentLibrary.buildLibraryResultRow(this));
+		jQuery.each( data.results, function() {
+			rows.push( instantContentLibrary.buildLibraryResultRow( this ) );
 		});
 
 		// Joining first means there should only be one append of a large string, instead of lots of smaller row strings appends,
 		// which is better for performance.
-		jQuery('#js-results-table').append(rows.join(''));
+		jQuery( '#js-results-table' ).append( rows.join( '' ) );
 
-		jQuery('#js-table-footer').show();
+		jQuery( '#js-table-footer' ).show();
 
-		instantContentLibrary.showMessage(instantContentL10n.libraryLoaded);
+		instantContentLibrary.showMessage( instantContentL10n.libraryLoaded );
 	},
 
 	/**
@@ -489,20 +488,20 @@ window['instantContentLibrary'] = {
 	 *
 	 * @function
 	 *
-	 * @param  {String[]} doc An array of document properties.
+	 * @param  {Object} doc Document.
 	 *
-	 * @return {String}       Table row markup.
+	 * @return {String}     Table row markup.
 	 */
-	buildLibraryResultRow: function(doc) {
+	buildLibraryResultRow: function( doc ) {
 		'use strict';
 		var row,
-			date = doc['date']['text'].replace('datetime(', '').replace(' UTC)', '');
+			date = doc.date.text.replace( 'datetime(', '' ).replace( ' UTC)', '' );
 
 		row  = '<tr>';
 		row += '<td></td>';
-		row += '<td class="title">' + doc['title'] + '</td>';
+		row += '<td class="title">' + doc.title + '</td>';
 		row += '<td class="date">' + date + '</td>';
-		row += '<td><button type="button" class="button import-content" data-key="' + doc['key'] + '">' + instantContentL10n.import + '</button></td>';
+		row += '<td><button type="button" class="button import-content" data-key="' + doc.key + '">' + instantContentL10n.import + '</button></td>';
 		row += '</tr>';
 		return row;
 	},
@@ -514,9 +513,9 @@ window['instantContentLibrary'] = {
 	 *
 	 * @function
 	 */
-	failedToConnect: function () {
+	failedToConnect: function() {
 		'use strict';
-		instantContentLibrary.showMessage(instantContentL10n.failedToConnect);
+		instantContentLibrary.showMessage( instantContentL10n.failedToConnect );
 	},
 
 	/**
@@ -528,9 +527,9 @@ window['instantContentLibrary'] = {
 	 *
 	 * @param  {String} message Message to show.
 	 */
-	showMessage: function(message) {
+	showMessage: function( message ) {
 		'use strict';
-		jQuery('.instant-content-updated p').html(message);
+		jQuery( '.instant-content-updated p' ).html( message );
 	},
 
 	/**
@@ -542,10 +541,10 @@ window['instantContentLibrary'] = {
 	 *
 	 * @param  {jQuery.event} event
 	 */
-	importContent: function(event) {
+	importContent: function( event ) {
 		'use strict';
-		jQuery('#js-instant-content-import-key').val( jQuery(event.target).data('key') );
-		jQuery('#js-instant-content-library').trigger('submit');
+		jQuery( '#js-instant-content-import-key' ).val( jQuery( event.target ).data( 'key' ) );
+		jQuery( '#js-instant-content-library' ).trigger( 'submit' );
 	},
 
 	/**
@@ -567,7 +566,7 @@ window['instantContentLibrary'] = {
 		instantContentLibrary.lookup();
 
 		// Bind import button (delegated)
-		jQuery('#js-results-table').on( 'click.instantContent', 'button.import-content', instantContentLibrary.importContent);
+		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.import-content', instantContentLibrary.importContent );
 	}
 };
 
@@ -578,7 +577,7 @@ window['instantContentLibrary'] = {
  *
  * @constructor
  */
-window['instantContentImporter'] = {
+window[ 'instantContentImporter' ] = {
 
 	/**
 	 * Initialise the importer on page load to grab the data for a specific document.
@@ -591,24 +590,24 @@ window['instantContentImporter'] = {
 		'use strict';
 		var jqxhr,
 			ajaxArgs = {
-				type    : 'POST',
-				url     : ajaxurl,
+				type: 'POST',
+				url: ajaxurl,
 				dataType: 'JSON',
-				data    : {
-					action : 'instant_content_import',
-					key    : jQuery('#js-instant-content-import-key').val(),
+				data: {
+					action: 'instant_content_import',
+					key: jQuery( '#js-instant-content-import-key' ).val(),
 					license: instantContentL10n.license
 				}
 			};
 
 		// Do the ajax call.
-		jqxhr = jQuery.ajax(ajaxurl, ajaxArgs);
+		jqxhr = jQuery.ajax( ajaxurl, ajaxArgs );
 
 		// On ajax success
-		jqxhr.done(instantContentImporter.importContentSuccess);
+		jqxhr.done( instantContentImporter.importContentSuccess );
 
 		// On ajax error.
-		jqxhr.fail(instantContentImporter.importContentFail);
+		jqxhr.fail( instantContentImporter.importContentFail );
 	},
 
 	/**
@@ -620,9 +619,9 @@ window['instantContentImporter'] = {
 	 *
 	 * @param  {Object} data Response object.
 	 */
-	importContentSuccess: function (data) {
+	importContentSuccess: function( data ) {
 		'use strict';
-		instantContentImporter.displayFeedback(data);
+		instantContentImporter.displayFeedback( data );
 	},
 
 	/**
@@ -634,10 +633,10 @@ window['instantContentImporter'] = {
 	 *
 	 * @function
 	 */
-	importContentFail: function(errorThrown) {
+	importContentFail: function( errorThrown ) {
 		'use strict';
-		// console.log('errorThrown');
-		// console.log(errorThrown);
+		// console.log( 'errorThrown' );
+		// console.log( errorThrown );
 	},
 
 	/**
@@ -649,16 +648,17 @@ window['instantContentImporter'] = {
 	 *
 	 * @function
 	 */
-	displayFeedback: function (data) {
+	displayFeedback: function( data ) {
 		'use strict';
 
-		if (0 === data.id) {
-			jQuery('.instant-content-updated p').html( data.msg );
+		if ( 0 === data.id ) {
+			jQuery( '.instant-content-updated p' ).html( data.msg );
 		} else {
-			jQuery('.instant-content-updated p').html( data.msg + '  <a href="' + data.draft_url + '">' + instantContentL10n.editPost + '</a>' );
-			jQuery('.import-data').append('<h1>' + data.title + '</h1>')
-				.append('<p>' + data.summary + '</p>')
-				.append('<p><a href="' + data.draft_url + '">' + instantContentL10n.viewDraftPost + '</a></p>');
+			jQuery( '.instant-content-updated p' ).html( data.msg + '  <a href="' + data.draft_url + '">' + instantContentL10n.editPost + '</a>' );
+			jQuery( '.import-data' )
+				.append( '<h1>' + data.title + '</h1>' )
+				.append( '<p>' + data.summary + '</p>' )
+				.append( '<p><a href="' + data.draft_url + '">' + instantContentL10n.viewDraftPost + '</a></p>' );
 		}
 	},
 
@@ -682,10 +682,10 @@ window['instantContentImporter'] = {
 	}
 };
 
-if (pagenow === 'posts_page_instant-content-search' ) {
-	jQuery(instantContentSearch.ready);
-} else if (pagenow === 'admin_page_instant-content-library' ) {
-	jQuery(instantContentLibrary.ready);
-} else if (pagenow === 'admin_page_instant-content-import' ) {
-	jQuery(instantContentImporter.ready);
+if ( pagenow === 'posts_page_instant-content-search' ) {
+	jQuery( instantContentSearch.ready );
+} else if ( pagenow === 'admin_page_instant-content-library' ) {
+	jQuery( instantContentLibrary.ready );
+} else if ( pagenow === 'admin_page_instant-content-import' ) {
+	jQuery( instantContentImporter.ready );
 }
