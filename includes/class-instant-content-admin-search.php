@@ -24,7 +24,10 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 		parent::init();
 
 		// Add link from plugins page
-		add_filter( 'plugin_action_links', array( $this, 'plugins_page_link' ) );
+		add_filter(
+			'plugin_action_links_' . Instant_Content::SLUG . '/' . Instant_Content::SLUG . '.php',
+			array( $this, 'plugins_page_link' )
+		);
 	}
 
 	/**
@@ -62,7 +65,8 @@ class Instant_Content_Admin_Search extends Instant_Content_Admin {
 	public function help() {
 		$screen = get_current_screen();
 		$search_help =
-			'<p>'  . __( 'Some help text here about what can be done on this search page.', 'instant-content' ) . '</p>';
+			'<p>'  . __( 'To find articles available for purchase in the Instant Content library, enter keywords into the search field and click "Search for Articles".  There are 150,000+ articles available for sale, but not all keywords will return results.', 'instant-content' ) . '</p>' .
+			'<p>'  . __( 'Please note, you will not be able to purchase any content or view the article previews until you have entered a valid license key on the settings page.', 'instant-content' ) . '</p>';
 
 		$screen->add_help_tab(
 			array(

@@ -109,31 +109,32 @@ abstract class Instant_Content_Admin {
 		$options = get_option( 'instant_content', false );
 
 		$l10n = array(
+			// Common
+			'hasValidLicenseAndTerms' => 'valid' === $options['license_status'] && $options['terms'],
+
 			// Search
-			'loading'          => __( 'Loading articles. Please wait...', 'instant-content' ),
-			'purchase'         => __( 'Purchase', 'instant-content' ),
-			'disabled'         => __( 'Disabled', 'instant-content' ),
-			'noResults'        => __( 'No results.', 'instant-content' ),
-			'failedToConnect'  => __( 'Failed to connect to server.', 'instant-content' ),
-			'aboutToPurchase'  => __( 'You are about to purchase the article', 'instant-content' ),
-			'takenToPayPal'    => __( 'You will be taken to a PayPal screen to complete the payment, and then returned to your WordPress library.', 'instant-content' ),
-			'clickOk'          => __( 'Click OK to continue.', 'instant-content' ),
-			'enterKeyPurchase' => __( 'Please enter a valid license key and agree to plugin terms to purchase content.', 'instant-content' ),
-			'license'          => isset( $options['license'] ) ? $options['license'] : '',
-			'licenseStatus'    => isset( $options['license_status'] ) ? $options['license_status'] : '',
-			'terms'            => isset( $options['terms'] ) ? $options['terms'] : false,
-			'referrer'         => get_site_url(),
-			'settingsUrl'      => menu_page_url( Instant_Content::SLUG . '-settings', false ),
+			'loading'                 => __( 'Loading articles. Please wait...', 'instant-content' ),
+			'purchase'                => __( 'Purchase', 'instant-content' ),
+			'disabled'                => __( 'Disabled', 'instant-content' ),
+			'noResults'               => __( 'No results.', 'instant-content' ),
+			'aboutToPurchase'         => __( 'You are about to purchase the article', 'instant-content' ),
+			'takenToPayPal'           => __( 'You will be taken to a PayPal screen to complete the payment, and then returned to your WordPress library.', 'instant-content' ),
+			'clickOk'                 => __( 'Click OK to continue.', 'instant-content' ),
+			'enterKeyPurchase'        => __( 'Please enter a valid license key and agree to plugin terms to purchase content.', 'instant-content' ),
+			'license'                 => isset( $options['license'] ) ? $options['license'] : '',
+			'referrer'                => get_site_url(),
+			'settingsUrl'             => menu_page_url( Instant_Content::SLUG . '-settings', false ),
 
 			// Library
-			'libraryLoaded'    => __( 'Library loaded.', 'instant-content' ),
-			'import'           => __( 'Import', 'instant-content' ),
-			'invalidKey'       => __( 'License key is invalid.', 'instant-content' ),
-			'enterKeyLibrary'  => __( 'Please enter a valid license key to view purchased content.', 'instant-content' ),
-			'noPurchases'      => __( 'No purchases.', 'instant-content' ),
+			'libraryLoaded'           => __( 'Library loaded.  New purchases may take a few minutes to appear.', 'instant-content' ),
+			'import'                  => __( 'Import', 'instant-content' ),
+			'invalidKey'              => __( 'License key is invalid.', 'instant-content' ),
+			'enterKeyLibrary'         => __( 'Please enter a valid license key to view purchased content.', 'instant-content' ),
+			'noPurchases'             => __( 'No purchases.', 'instant-content' ),
 
 			// Search & Library
-			'items'            => __( 'items', 'instant-content' ), // items is a reserved property name, so in JS, use instantContentL10n['items']
+			'items'                   => __( 'items', 'instant-content' ), // items is a reserved property name, so in JS, use instantContentL10n['items']
+			'failedToConnect'         => __( 'Failed to connect to server.', 'instant-content' ),
 
 			// Import
 			'viewDraftPost'    => __( 'View Draft Post', 'instant-content' ),
@@ -175,7 +176,7 @@ abstract class Instant_Content_Admin {
 		// Add help sidebar
 		$screen->set_help_sidebar(
 			'<p><strong>' . __( 'For more information:', 'instant-content' ) . '</strong></p>' .
-			'<p><a href="http://instantcontent.me" target="_blank" title="' . esc_attr__( 'Get Support', 'instant-content' ) . '">' . __( 'Get Support', 'instant-content' ) . '</a></p>'
+			'<p><a href="http://www.instantcontent.me/contact" target="_blank" title="' . esc_attr__( 'Get Support', 'instant-content' ) . '">' . __( 'Get Support', 'instant-content' ) . '</a></p>'
 		);
 	}
 

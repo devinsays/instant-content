@@ -65,7 +65,7 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 	public function help() {
 		$screen = get_current_screen();
 		$settings_help =
-			'<p>'  . __( 'Some help text here about the settings on this page.', 'genesis' ) . '</p>';
+			'<p>'  . __( 'If you have problems generating the license key from the the Instant Content website, please contact us at instantcontent@demandmedia.com.', 'instant-content' ) . '</p>';
 
 		$screen->add_help_tab(
 			array(
@@ -114,6 +114,9 @@ class Instant_Content_Admin_Settings extends Instant_Content_Admin {
 				// If new license is a valid length, activate it
 				if ( 32 === strlen( $input['license'] ) ) {
 					$output['license_status'] = $this->activate_license( $input['license'] );
+					if ( 'valid' != $output['license_status'] ) {
+						$output['license_status'] = 'error';
+					}
 				}
 
 			}

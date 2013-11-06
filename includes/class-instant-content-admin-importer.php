@@ -65,7 +65,8 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 	public function help() {
 		$screen = get_current_screen();
 		$importer_help =
-			'<p>'  . __( 'Some help text here about the automatic importing on this page.', 'instant-content' ) . '</p>';
+			'<p>'  . __( 'If your draft post did not import correctly, please contact us at instantcontent@demandmedia.com.', 'instant-content' ) . '</p>' .
+			'<p>'  . __( 'Import settings can be adjusted on the Instant Content "Settings" page.', 'instant-content' ) . '</p>';
 
 		$screen->add_help_tab(
 			array(

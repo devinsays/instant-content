@@ -54,7 +54,7 @@ class Instant_Content_Plugin_Updater {
 	/**
 	 * Check for Updates at the defined API endpoint and modify the update array.
 	 *
-	 * This function dives into the update api just when Wordpress creates its update array,
+	 * This function dives into the update api just when WordPress creates its update array,
 	 * then adds a custom API call and injects the custom plugin data retrieved from the API.
 	 * It is reassembled from parts of the native Wordpress plugin update code.
 	 * See wp-includes/update.php line 121 for the original wp_update_plugins() function.
@@ -66,7 +66,7 @@ class Instant_Content_Plugin_Updater {
 	 */
 	function pre_set_site_transient_update_plugins_filter( $_transient_data ) {
 
-		if( empty( $_transient_data ) ) return $_transient_data;
+		if ( empty( $_transient_data ) ) return $_transient_data;
 
 		$to_send = array( 'slug' => $this->slug );
 
@@ -131,7 +131,7 @@ class Instant_Content_Plugin_Updater {
 			'slug' 			=> $this->slug,
 			'author'		=> $data['author']
 		);
-		$request = wp_remote_post( $this->api_url, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$request = wp_remote_post( $this->api_url, array( 'timeout' => 30, 'sslverify' => false, 'body' => $api_params ) );
 
 		if ( ! is_wp_error( $request ) ):
 			$request = json_decode( wp_remote_retrieve_body( $request ) );
