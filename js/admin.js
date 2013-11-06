@@ -15,8 +15,6 @@
 // ==/ClosureCompiler==
 // http://closure-compiler.appspot.com/home
 
-/*global jQuery, pagenow, ajaxurl, instantContent, instantContentSearch, instantContentLibrary, instantContentImporter, instantContentL10n*/
-
 /**
  * Holds utility functions in an object to avoid polluting global namespace.
  *
