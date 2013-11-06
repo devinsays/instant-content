@@ -501,7 +501,7 @@ window[ 'instantContentLibrary' ] = {
 		row += '<td></td>';
 		row += '<td class="title">' + doc.title + '</td>';
 		row += '<td class="date">' + date + '</td>';
-		row += '<td><button type="button" class="button import-content" data-key="' + doc.key + '">' + instantContentL10n.import + '</button></td>';
+		row += '<td><button type="button" class="button import-content" data-key="' + doc.key + '">' + instantContentL10n['import'] + '</button></td>';
 		row += '</tr>';
 		return row;
 	},
