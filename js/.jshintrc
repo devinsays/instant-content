@@ -1,0 +1,27 @@
+{
+	"boss": true,
+	"curly": true,
+	"eqeqeq": true,
+	"eqnull": true,
+	"expr": true,
+	"immed": true,
+	"noarg": true,
+	"quotmark": "single",
+	"smarttabs": true,
+	"trailing": true,
+	"undef": true,
+	"unused": true,
+
+	"browser": true,
+
+	"globals": {
+		"jQuery": false,
+		"pagenow": false,
+		"ajaxurl": false,
+		"instantContent": false,
+		"instantContentSearch": false,
+		"instantContentLibrary": false,
+		"instantContentImporter": false,
+		"instantContentL10n": false
+	}
+}
