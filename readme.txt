@@ -14,17 +14,23 @@ Allows you to purchase and import content to your WordPress site.
 
 == Installation ==
 
-1. Upload demand-media` folder to the `/wp-content/plugins/` directory
+1. Upload the instant-content folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Go to the Posts -> Demand Media screen
+3. Go to the Posts -> Instant Content screen
 4. Select the content you wish to purchase
 
 == Frequently Asked Questions ==
 
-== Screenshots ==
+* For support questions contact us: http://www.instantcontent.me/contact/
 
 == Changelog ==
 
-= 0.1 =
+= 1.1.0 =
+
+* Minor update contextual help menus
+* Minor update abstracted API URLs
+* Minor update improved inline documentation
+
+= 1.0.0 =
 
 * Initial release
