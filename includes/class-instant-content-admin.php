@@ -32,6 +32,14 @@ abstract class Instant_Content_Admin {
 	protected $library_hook  = null;
 
 	/**
+	 * Page hook for the cart screen.
+	 *
+	 * @since 1.0.0
+	 * @type string
+	 */
+	protected $cart_hook  = null;
+
+	/**
 	 * Page hook for the settings screen.
 	 *
 	 * @since 1.0.0

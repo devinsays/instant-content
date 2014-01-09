@@ -17,6 +17,7 @@
 	<h2 class="nav-tab-wrapper">
 		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-search' ) ); ?>" class="nav-tab"><?php _e( 'Find Content', 'instant-content' ); ?></a>
 		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-library' ) ); ?>" class="nav-tab"><?php _e( 'Library', 'instant-content' ); ?></a>
+		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-cart' ) ); ?>" class="nav-tab"><?php _e( 'Cart', 'instant-content' ); ?></a>
 		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-settings' ) ); ?>" class="nav-tab nav-tab-active"><?php _e( 'Settings', 'instant-content' ); ?></a>
 	</h2>
 

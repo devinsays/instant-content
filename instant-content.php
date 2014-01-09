@@ -31,6 +31,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-search.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-library.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-cart.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-importer.php';
 require plugin_dir_path( __FILE__ ) . 'includes/class-instant-content-admin-settings.php';
 
@@ -45,6 +46,10 @@ $instant_content_admin_search->init();
 // Instantiate the library page class
 $instant_content_admin_library = new Instant_Content_Admin_Library;
 $instant_content_admin_library->init();
+
+// Instantiate the library page class
+$instant_content_admin_cart = new Instant_Content_Admin_Cart;
+$instant_content_admin_cart->init();
 
 // Instantiate importer page class
 $instant_content_importer = new Instant_Content_Admin_Importer;
