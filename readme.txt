@@ -25,6 +25,10 @@ Allows you to purchase and import content to your WordPress site.
 
 == Changelog ==
 
+= 1.2.0 =
+
+* Update download item name
+
 = 1.1.0 =
 
 * Minor update contextual help menus
