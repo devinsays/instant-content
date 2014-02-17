@@ -63,7 +63,7 @@ window[ 'instantContentSearch' ] = {
 	 *
 	 * @function
 	 */
-	searchIfPopulated: function() {
+	searchIfPopulated: function( event ) {
 		'use strict';
 		event.preventDefault();
 		instantContentSearch.queryTerms = jQuery( '#js-post-search-input' ).val();
