@@ -21,6 +21,8 @@
 		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-settings' ) ); ?>" class="nav-tab"><?php _e( 'Settings', 'instant-content' ); ?></a>
 	</h2>
 
+	<?php var_dump( get_option( 'instant_content_cart' ) ); ?>
+
 	<ul>
 		<li>This screen articles saved in cart.</li>
 		<li>Allows user select articles they wish to purchase, and bulk purchase.</li>

@@ -210,7 +210,7 @@ window[ 'instantContentSearch' ] = {
 		}
 
 		row += '<td class="price">$ ' + doc.price + '</td>';
-		row += '<td><button type="button" class="button purchase" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.purchase + '</a></td>';
+		row += '<td><button type="button" class="button addtocart" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.addtocart + '</a></td>';
 		row += '</tr>';
 		return row;
 	},
@@ -310,6 +310,36 @@ window[ 'instantContentSearch' ] = {
 	},
 
 	/**
+	 * Add the article to the cart for checkout
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	addToCart: function( event ) {
+		event.preventDefault();
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        data: {
+	            'action':'instant_content_add_to_cart',
+	            'title' : jQuery( event.target ).data( 'title' ),
+	            'price' : jQuery( event.target ).attr( 'data-price' ),
+	            'key'   : jQuery( event.target ).data( 'key' ).toString()
+	        },
+	        success:function(data) {
+	            // This outputs the result of the ajax request
+	            console.log(data);
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+	},
+
+	/**
 	 * Update the purchase form with values before submitting.
 	 *
 	 * @since 1.0.0
@@ -362,7 +392,7 @@ window[ 'instantContentSearch' ] = {
 		jQuery( '#js-search-submit' ).on( 'click.instantContent', instantContentSearch.searchIfPopulated );
 
 		// Bind purchase button click (delegated)
-		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.purchase', instantContentSearch.purchaseContent );
+		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.addtocart', instantContentSearch.addToCart );
 
 	}
 };

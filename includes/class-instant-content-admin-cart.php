@@ -16,6 +16,19 @@
 class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 
 	/**
+	 * Hook in the methods for the importer page.
+	 *
+	 * @since 1.3.0
+	 */
+	public function init() {
+		parent::init();
+
+		// Register ajax actions
+		add_action( 'wp_ajax_instant_content_add_to_cart', array( $this, 'instant_content_add_to_cart') );
+	}
+
+
+	/**
 	 * Register this admin page with WordPress.
 	 *
 	 * @since 1.0.0
@@ -64,5 +77,41 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 		// Add help sidebar
 		parent::help();
 	}
+
+	/**
+	 * Take the article information and add it to the cart.
+	 *
+	 * @since 1.0.0
+	 */
+	public function instant_content_add_to_cart() {
+
+		$cart = get_option( 'instant_content_cart', array() );
+
+		// The $_REQUEST contains all the data sent via ajax
+		if ( isset($_REQUEST) ) {
+			$title = $_REQUEST['title'];
+			$price = $_REQUEST['price'];
+			$key = $_REQUEST['key'];
+		}
+
+		$cart[] = array(
+			'title' => $title,
+			'price' => $price,
+			'key' => $key,
+		);
+
+		$update = update_option( 'instant_content_cart', $cart );
+
+		$ajax['update'] = $update;
+		$ajax['title'] = $title;
+		$ajax['price'] = $price;
+		$ajax['key'] = $key;
+
+		echo json_encode( $ajax );
+
+		// Always die in functions echoing ajax content
+	   die();
+	}
+
 
 }
