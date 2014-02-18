@@ -330,13 +330,29 @@ window[ 'instantContentSearch' ] = {
 	            'key'   : jQuery( event.target ).data( 'key' ).toString()
 	        },
 	        success:function(data) {
-	            // This outputs the result of the ajax request
-	            console.log(data);
+	            instantContentSearch.cartNotice( data, event );
 	        },
 	        error: function(errorThrown){
 	            console.log(errorThrown);
 	        }
 	    });
+	},
+
+	/**
+	 * Displays notice that item was added to cart
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	cartNotice: function( data, event ) {
+		data = JSON.parse( data );
+		jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + instantContentL10n.addedtocart + data.title + '</p></div>').hide().fadeIn();
+		// @Todo Checkout action will need to be updated
+		jQuery( event.target ).text( instantContentL10n.checkout );
+		jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
 	},
 
 	/**
@@ -619,6 +635,9 @@ window[ 'instantContentCart' ] = {
 	removeFromCart: function( event ) {
 		event.preventDefault();
 
+		// Give user indication that action has started
+		jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
+
 		jQuery.ajax({
 	        url: ajaxurl,
 	        data: {
@@ -626,8 +645,8 @@ window[ 'instantContentCart' ] = {
 	            'key'   : jQuery( event.target ).data( 'key' ).toString()
 	        },
 	        success:function(data) {
-	            // This outputs the result of the ajax request
-	            console.log(data);
+	        	// Remove item from the screen
+	            jQuery( event.target ).parents('tr').fadeOut();
 	        },
 	        error: function(errorThrown){
 	            console.log(errorThrown);
