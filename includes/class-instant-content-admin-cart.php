@@ -24,7 +24,9 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 		parent::init();
 
 		// Register ajax actions
-		add_action( 'wp_ajax_instant_content_add_to_cart', array( $this, 'instant_content_add_to_cart') );
+		add_action( 'wp_ajax_instant_content_add_to_cart', array( $this, 'instant_content_add_to_cart' ) );
+
+		add_action( 'wp_ajax_instant_content_remove_from_cart', array( $this, 'instant_content_remove_from_cart' ) );
 	}
 
 
@@ -79,7 +81,7 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 	}
 
 	/**
-	 * Take the article information and add it to the cart.
+	 * Add an article to the cart
 	 *
 	 * @since 1.0.0
 	 */
@@ -111,6 +113,39 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 
 		// Always die in functions echoing ajax content
 	   die();
+	}
+
+	/**
+	 * Remove an article from the cart
+	 *
+	 * @since 1.0.0
+	 */
+	public function instant_content_remove_from_cart() {
+
+		$cart = get_option( 'instant_content_cart', array() );
+
+		// The $_REQUEST contains all the data sent via ajax
+		if ( isset($_REQUEST) ) {
+			$remove = $_REQUEST['key'];
+		}
+
+		foreach( $cart as $key => $article ) {
+			if ( $remove == $article['key'] ) {
+				$remove_key = $key;
+				break;
+			}
+		}
+
+		unset( $cart[$remove_key] );
+
+		$update = update_option( 'instant_content_cart', $cart );
+
+		$ajax['update'] = $update;
+
+		echo json_encode( $ajax );
+
+		// Always die in functions echoing ajax content
+		die();
 	}
 
 

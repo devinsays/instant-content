@@ -168,6 +168,7 @@ abstract class Instant_Content_Admin {
 		return array(
 			'posts_page_instant-content-search',
 			'admin_page_instant-content-library',
+			'admin_page_instant-content-cart',
 			'admin_page_instant-content-import',
 			'admin_page_instant-content-settings',
 		);

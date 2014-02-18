@@ -599,6 +599,64 @@ window[ 'instantContentLibrary' ] = {
 };
 
 /**
+ * Holds cart page values in an object to avoid polluting global namespace.
+ *
+ * @since 1.3.0
+ *
+ * @constructor
+ */
+window[ 'instantContentCart' ] = {
+
+	/**
+	 * Remove an article from the cart
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	removeFromCart: function( event ) {
+		event.preventDefault();
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        data: {
+	            'action':'instant_content_remove_from_cart',
+	            'key'   : jQuery( event.target ).data( 'key' ).toString()
+	        },
+	        success:function(data) {
+	            // This outputs the result of the ajax request
+	            console.log(data);
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+	},
+
+	/**
+	 * Initialises all aspects of the scripts.
+	 *
+	 * Generally ordered with stuff that inserts new elements into the DOM first,
+	 * then stuff that triggers an event on existing DOM elements when ready,
+	 * followed by stuff that triggers an event only on user interaction. This
+	 * keeps any screen jumping from occuring later on.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 */
+	ready: function() {
+		'use strict';
+
+		// Bind purchase button click (delegated)
+		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.remove', instantContentCart.removeFromCart );
+
+	}
+};
+
+/**
  * Holds importer page values in an object to avoid polluting global namespace.
  *
  * @since 1.0.0
@@ -716,4 +774,6 @@ if ( pagenow === 'posts_page_instant-content-search' ) {
 	jQuery( instantContentLibrary.ready );
 } else if ( pagenow === 'admin_page_instant-content-import' ) {
 	jQuery( instantContentImporter.ready );
+} else if ( pagenow === 'admin_page_instant-content-cart' ) {
+	jQuery( instantContentCart.ready );
 }
