@@ -74,25 +74,15 @@
 			<thead>
 				<tr>
 					<th scope="col" id="cb" class="manage-column column-cb check-column"></th>
-					<th scope="col" id="title" class="manage-column column-title"><?php _e( 'Title', 'instant-content' ); ?></th>
-					<th scope="col" id="summary" class="manage-column column-summary"><?php _e( 'Summary', 'instant-content' ); ?></th>
-					<th scope="col" id="word_count" class="manage-column column-word_count" width="100px"><?php _e( 'Word Count', 'instant-content' ); ?></th>
-					<th scope="col" id="price" class="manage-column column-preview" width="100px"><?php _e( 'Preview', 'instant-content' ); ?></th>
-					<th scope="col" id="price" class="manage-column column-price" width="100px"><?php _e( 'Price', 'instant-content' ); ?></th>
-					<th scope="col" id="purchase" class="manage-column column-price" width="100px"><?php _e( 'Purchase', 'instant-content' ); ?></th>
+					<th scope="col" class="manage-column column-title"><?php _e( 'Title', 'instant-content' ); ?></th>
+					<th scope="col" class="manage-column column-summary"><?php _e( 'Summary', 'instant-content' ); ?></th>
+					<th scope="col" class="manage-column column-word_count" width="70px"><?php _e( 'Words', 'instant-content' ); ?></th>
+					<th scope="col" class="manage-column column-preview" width="70px"><?php _e( 'Preview', 'instant-content' ); ?></th>
+					<th scope="col" class="manage-column column-price" width="60px"><?php _e( 'Price', 'instant-content' ); ?></th>
+					<th scope="col" class="manage-column column-cart" width="100px"><?php _e( 'Cart', 'instant-content' ); ?></th>
+					<th scope="col" class="manage-column column-price" width="120px"><?php _e( 'Purchase', 'instant-content' ); ?></th>
 				</tr>
 			</thead>
-			<tfoot>
-				<tr class="table-footer-row" id="js-table-footer">
-					<th scope="col" id="cb" class="manage-column column-cb check-column"></th>
-					<th scope="col" id="title" class="manage-column column-title"><?php _e( 'Title', 'instant-content' ); ?></th>
-					<th scope="col" id="summary" class="manage-column column-summary"><?php _e( 'Summary', 'instant-content' ); ?></th>
-					<th scope="col" id="word_count" class="manage-column column-word_count" width="100px"><?php _e( 'Word Count', 'instant-content' ); ?></th>
-					<th scope="col" id="price" class="manage-column column-preview" width="100px"><?php _e( 'Preview', 'instant-content' ); ?></th>
-					<th scope="col" id="price" class="manage-column column-price" width="100px"><?php _e( 'Price', 'instant-content' ); ?></th>
-					<th scope="col" id="purchase" class="manage-column column-price" width="100px"><?php _e( 'Purchase', 'instant-content' ); ?></th>
-				</tr>
-			</tfoot>
 			<tbody class="results-table" id="js-results-table">
 				<tr>
 					<td class="no-border"></td>

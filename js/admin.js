@@ -211,6 +211,7 @@ window[ 'instantContentSearch' ] = {
 
 		row += '<td class="price">$ ' + doc.price + '</td>';
 		row += '<td><button type="button" class="button addtocart" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.addtocart + '</a></td>';
+		row += '<td><button type="button" class="button purchase" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.purchasenow + '</a></td>';
 		row += '</tr>';
 		return row;
 	},

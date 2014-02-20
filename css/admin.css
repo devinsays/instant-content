@@ -20,6 +20,10 @@ h2.nav-tab-wrapper {
 	width: 180px;
 }
 
+.widefat td, .widefat th {
+	padding: 8px 7px;
+}
+
 .widefat .tr-info td {
 	padding: 14px 7px;
 }

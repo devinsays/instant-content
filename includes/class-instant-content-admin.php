@@ -123,6 +123,7 @@ abstract class Instant_Content_Admin {
 			// Search
 			'loading'                 => __( 'Loading articles. Please wait...', 'instant-content' ),
 			'purchase'                => __( 'Purchase', 'instant-content' ),
+			'purchasenow'             => __( 'Purchase Now', 'instant-content' ),
 			'checkout'                => __( 'Check Out', 'instant-content' ),
 			'addtocart'               => __( 'Add to Cart', 'instant-content' ),
 			'addedtocart'        	  => __( 'Item added to cart: ', 'instant-content' ),
