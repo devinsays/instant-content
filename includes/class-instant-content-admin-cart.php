@@ -27,6 +27,9 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 		add_action( 'wp_ajax_instant_content_add_to_cart', array( $this, 'instant_content_add_to_cart' ) );
 
 		add_action( 'wp_ajax_instant_content_remove_from_cart', array( $this, 'instant_content_remove_from_cart' ) );
+
+		add_action( 'wp_ajax_instant_content_get_checkout_data', array( $this, 'instant_content_get_checkout_data' ) );
+
 	}
 
 
@@ -118,7 +121,7 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 	/**
 	 * Remove an article from the cart
 	 *
-	 * @since 1.0.0
+	 * @since 1.3.0
 	 */
 	public function instant_content_remove_from_cart() {
 
@@ -141,6 +144,39 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 		$update = update_option( 'instant_content_cart', $cart );
 
 		$ajax['update'] = $update;
+
+		echo json_encode( $ajax );
+
+		// Always die in functions echoing ajax content
+		die();
+	}
+
+	/**
+	 * Remove an article from the cart
+	 *
+	 * @since 1.3.0
+	 */
+	public function instant_content_get_checkout_data() {
+
+		$cart = get_option( 'instant_content_cart', array() );
+
+		// Exit early there are no items in cart
+		if ( !$cart ) {
+			die();
+		}
+
+		$price = 0;
+
+		foreach( $cart as $key => $article ) {
+			$cartkeys[] = $article['key'];
+			$titles[] = $article['title'];
+			$price = $price + $article['price'];
+		}
+
+		$ajax['count'] = sizeof( $cart );
+		$ajax['keys'] = $cartkeys;
+		$ajax['titles'] = $titles;
+		$ajax['total_price'] = $price;
 
 		echo json_encode( $ajax );
 

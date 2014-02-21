@@ -160,7 +160,7 @@ abstract class Instant_Content_Admin {
 			'apiBaseUrl'       => Instant_Content::API_BASE_URL,
 
 			// Items in cart
-			'cart'       => $this->display_cart_keys(),
+			'cart'       => json_encode( $this->display_cart_keys() ),
 		);
 
 		wp_localize_script( Instant_Content::SLUG . '-admin-script', 'instantContentL10n', $l10n );
@@ -177,7 +177,7 @@ abstract class Instant_Content_Admin {
 			foreach( $cart as $key => $article ) {
 				$cartkeys[] = $article['key'];
 			}
-			$cart = json_encode( $cartkeys );
+			$cart = $cartkeys;
 		endif;
 		return $cart;
 	}
