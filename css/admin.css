@@ -53,6 +53,10 @@ h2.nav-tab-wrapper {
 	content: "\f100";
 }
 
+.item-in-cart {
+	background: #fafafa;
+}
+
 .tablenav .tablenav-pages {
 	display: none;
 }

@@ -196,9 +196,15 @@ window[ 'instantContentSearch' ] = {
 		'use strict';
 		var settingsUrl = instantContentL10n.settingsUrl,
 			previewUrl  = instantContentSearch.buildPreviewUrl( doc.key ),
-			row;
+			row,
+			cart = false;
 
-		row = '<tr>';
+		if ( instantContentL10n.cart.indexOf( doc.key ) > -1 ) {
+			cart = true;
+			row = '<tr class="item-in-cart">';
+		} else {
+			row = '<tr>';
+		}
 		row += '<td></td>';
 		row += '<td class="title">' + doc.title + '</td>';
 		row += '<td class="summary">' + doc.summary + '</td>';
@@ -211,8 +217,12 @@ window[ 'instantContentSearch' ] = {
 		}
 
 		row += '<td class="price">$ ' + doc.price + '</td>';
-		row += '<td><button type="button" class="button addtocart" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.addtocart + '</a></td>';
-		row += '<td><button type="button" class="button purchase" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.purchasenow + '</a></td>';
+		if (cart) {
+			row += '<td><a href="' + instantContentL10n.cartUrl + '">' + instantContentL10n.viewCart + '</a></td>';
+		} else {
+			row += '<td><button type="button" class="button addtocart" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.addtocart + '</button></td>';
+		}
+		row += '<td><button type="button" class="button purchase" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.purchasenow + '</button></td>';
 		row += '</tr>';
 		return row;
 	},

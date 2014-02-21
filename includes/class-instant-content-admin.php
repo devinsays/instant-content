@@ -127,6 +127,7 @@ abstract class Instant_Content_Admin {
 			'checkout'                => __( 'Check Out', 'instant-content' ),
 			'addtocart'               => __( 'Add to Cart', 'instant-content' ),
 			'addedtocart'        	  => __( 'Item added to cart: ', 'instant-content' ),
+			'viewCart'	        	  => __( 'View Cart', 'instant-content' ),
 			'disabled'                => __( 'Disabled', 'instant-content' ),
 			'noResults'               => __( 'No results.', 'instant-content' ),
 			'aboutToPurchase'         => __( 'You are about to purchase the article', 'instant-content' ),
@@ -136,6 +137,8 @@ abstract class Instant_Content_Admin {
 			'license'                 => isset( $options['license'] ) ? $options['license'] : '',
 			'referrer'                => get_site_url(),
 			'settingsUrl'             => menu_page_url( Instant_Content::SLUG . '-settings', false ),
+			'cartUrl'           	  => menu_page_url( Instant_Content::SLUG . '-cart', false ),
+
 
 			// Library
 			'libraryLoaded'           => __( 'Library loaded.
@@ -155,9 +158,28 @@ abstract class Instant_Content_Admin {
 
 			// API
 			'apiBaseUrl'       => Instant_Content::API_BASE_URL,
+
+			// Items in cart
+			'cart'       => $this->display_cart_keys(),
 		);
 
 		wp_localize_script( Instant_Content::SLUG . '-admin-script', 'instantContentL10n', $l10n );
+	}
+
+	/**
+	 * Outputs article keys of items saved in the cart
+	 *
+	 * @since 1.3.0
+	 */
+	public function display_cart_keys() {
+		$cart = get_option( 'instant_content_cart', false );
+		if ( $cart ) :
+			foreach( $cart as $key => $article ) {
+				$cartkeys[] = $article['key'];
+			}
+			$cart = json_encode( $cartkeys );
+		endif;
+		return $cart;
 	}
 
 	/**
