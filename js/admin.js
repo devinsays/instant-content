@@ -39,6 +39,67 @@ window[ 'instantContent' ] = {
 	buildApiUrl: function( endPoint, args ) {
 		'use strict';
 		return instantContentL10n.apiBaseUrl + endPoint + '?json=' + JSON.stringify( args );
+	},
+
+	/**
+	 * Fetches data for cart checkout
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	checkoutStart: function( event ) {
+		event.preventDefault();
+
+		if ( !instantContentL10n.hasValidLicenseAndTerms ) {
+			alert( instantContentL10n.enterKeyPurchase );
+			return;
+		}
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        data: {
+	            'action':'instant_content_get_checkout_data',
+	        },
+	        success:function(data) {
+	        	instantContent.checkoutConfirm( jQuery.parseJSON( data ) );
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+	},
+
+	/**
+	 * Confirms checkout, sets form data
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	checkoutConfirm: function( data ) {
+
+		var custom, confirmText, item;
+
+		confirmText = 'You are about to purchase ' + data.count + ' articles from your cart for $' + data.total_price + '.\n\n';
+		confirmText += instantContentL10n.takenToPayPal + '\n\n' + instantContentL10n.clickOk;
+		item = 'Instant Content Articles (' + data.count + ')';
+
+		if ( confirm( confirmText ) ) {
+			jQuery( '#js-paypal-cart-item' ).val( item );
+			jQuery( '#js-paypal-cart-amount' ).val( data.total_price );
+			custom = {
+				article_keys: data.keys,
+				license_key: instantContentL10n.license,
+				purchaser_domain: instantContentL10n.referrer
+			};
+			jQuery( '#js-paypal-cart-custom' ).val( JSON.stringify( custom ) );
+			jQuery( '#js-instant-content-cart' ).trigger( 'submit' );
+		}
 	}
 
 };
@@ -426,6 +487,9 @@ window[ 'instantContentSearch' ] = {
 		// Bind purchase button click (delegated)
 		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.addtocart', instantContentSearch.addToCart );
 
+		// Bind purchase button click (delegated)
+		jQuery( '.instant-content-cart-notice' ).on( 'click.instantContent', 'button.checkout', instantContent.checkoutStart );
+
 	}
 };
 
@@ -676,67 +740,6 @@ window[ 'instantContentCart' ] = {
 	},
 
 	/**
-	 * Fetches data for cart checkout
-	 *
-	 * @since 1.3.0
-	 *
-	 * @function
-	 *
-	 * @param  {jQuery.event} event
-	 */
-	checkoutStart: function( event ) {
-		event.preventDefault();
-
-		if ( !instantContentL10n.hasValidLicenseAndTerms ) {
-			alert( instantContentL10n.enterKeyPurchase );
-			return;
-		}
-
-		jQuery.ajax({
-	        url: ajaxurl,
-	        data: {
-	            'action':'instant_content_get_checkout_data',
-	        },
-	        success:function(data) {
-	        	instantContentCart.checkoutConfirm( jQuery.parseJSON( data ) );
-	        },
-	        error: function(errorThrown){
-	            console.log(errorThrown);
-	        }
-	    });
-	},
-
-	/**
-	 * Confirms checkout, sets form data
-	 *
-	 * @since 1.3.0
-	 *
-	 * @function
-	 *
-	 * @param  {jQuery.event} event
-	 */
-	checkoutConfirm: function( data ) {
-
-		var custom, confirmText, item;
-
-		confirmText = 'You are about to purchase ' + data.count + ' articles from your cart for $' + data.total_price + '.\n\n';
-		confirmText += instantContentL10n.takenToPayPal + '\n\n' + instantContentL10n.clickOk;
-		item = 'Instant Content Articles (' + data.count + ')';
-
-		if ( confirm( confirmText ) ) {
-			jQuery( '#js-paypal-cart-item' ).val( item );
-			jQuery( '#js-paypal-cart-amount' ).val( data.total_price );
-			custom = {
-				article_keys: data.keys,
-				license_key: instantContentL10n.license,
-				purchaser_domain: instantContentL10n.referrer
-			};
-			jQuery( '#js-paypal-cart-custom' ).val( JSON.stringify( custom ) );
-			jQuery( '#js-instant-content-cart' ).trigger( 'submit' );
-		}
-	},
-
-	/**
 	 * Initialises all aspects of the scripts.
 	 *
 	 * Generally ordered with stuff that inserts new elements into the DOM first,
@@ -755,7 +758,7 @@ window[ 'instantContentCart' ] = {
 		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.remove', instantContentCart.removeFromCart );
 
 		// Bind purchase button click (delegated)
-		jQuery( '.instant-content-cart-notice' ).on( 'click.instantContent', 'button.checkout', instantContentCart.checkoutStart );
+		jQuery( '.instant-content-cart-notice' ).on( 'click.instantContent', 'button.checkout', instantContent.checkoutStart );
 
 	}
 };
