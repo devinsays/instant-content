@@ -32,13 +32,15 @@
 		$notice = __( 'Please <a href="%s">agree to terms</a> before purchasing content.', 'instant-content' );
 	}
 
-	if ( isset( $notice ) ) {
-		?><div class="updated inline below-h2"><p><?php printf( $notice, esc_url( menu_page_url( Instant_Content::SLUG . '-settings', false ) ) ); ?></p></div><?php
-	}
-	?>
+	if ( isset( $notice ) ) { ?>
+		<div class="updated inline below-h2"><p><?php printf( $notice, esc_url( menu_page_url( Instant_Content::SLUG . '-settings', false ) ) ); ?></p></div>
+	<?php
+	} else {
+		$this->view( 'cart-notice' );
+	} ?>
 
-	<form id="search_box" class="search-box">
-		<p><?php _e( 'Search for content to purchase:', 'instant-content' ); ?></p>
+	<form id="search_box" class="search-box stuffbox">
+		<h4><?php _e( 'Search for content to purchase:', 'instant-content' ); ?></h4>
 		<p>
 			<label class="screen-reader-text" for="post-search-input"><?php _e( 'Search Posts:', 'instant-content' ); ?></label>
 			<input type="search" id="js-post-search-input" name="instant-content-search" value="" />

@@ -4,6 +4,10 @@ h2.nav-tab-wrapper {
 	margin-bottom:20px;
 }
 
+.search-box {
+	padding: 5px 15px 10px;
+}
+
 .results-table td {
 	padding: 15px 7px;
 }
@@ -14,6 +18,10 @@ h2.nav-tab-wrapper {
 
 .results-table .no-border {
 	border: none;
+}
+
+.tablenav {
+	display: none;
 }
 
 .widefat .column-date {
@@ -30,6 +38,19 @@ h2.nav-tab-wrapper {
 
 .instant-content-updated .waiting {
 	margin: 0 10px -3px 0;
+}
+
+.instant-content-cart-notice .button {
+	margin-left:20px;
+}
+
+.instant-content-cart-notice .dashicons-cart {
+	margin:0 10px 0 0;
+}
+
+.cart-icon {
+	font-family: "dashicons";
+	content: "\f100";
 }
 
 .tablenav .tablenav-pages {

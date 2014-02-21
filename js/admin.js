@@ -152,6 +152,7 @@ window[ 'instantContentSearch' ] = {
 
 		// Hide pagination, and clear existing result rows
 		jQuery( '.tablenav-pages' ).hide();
+		jQuery( '.tablenav' ).hide();
 		jQuery( '#js-results-table > tr' ).remove();
 
 		// If no results, abandon now.
@@ -306,7 +307,7 @@ window[ 'instantContentSearch' ] = {
 				instantContentSearch.instantSearch( instantContentSearch.offset + instantContentSearch.maxItems );
 			});
 		}
-
+		jQuery( '.tablenav' ).show();
 		jQuery( '.tablenav-pages' ).show();
 	},
 
@@ -354,6 +355,10 @@ window[ 'instantContentSearch' ] = {
 		// @Todo Checkout action will need to be updated
 		jQuery( event.target ).text( instantContentL10n.checkout );
 		jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
+		jQuery('.cart-count').each( function(){
+			var count =  jQuery(this).data('count') + 1;
+			jQuery(this).data('count',count).text(count);
+		});
 	},
 
 	/**
@@ -510,6 +515,7 @@ window[ 'instantContentLibrary' ] = {
 		// Update and show pagination
 		jQuery( '.displaying-num' ).text( data.results.length + ' / ' + data.count + ' ' + instantContentL10n[ 'items' ] );
 		jQuery( '.pagination-links' ).hide(); // Temporarily hide the pagination buttons, as these aren't working yet
+		jQuery( '.tablenav' ).show();
 		jQuery( '.tablenav-pages' ).show();
 
 		// Loop through the results and build table markup
@@ -648,6 +654,10 @@ window[ 'instantContentCart' ] = {
 	        success:function(data) {
 	        	// Remove item from the screen
 	            jQuery( event.target ).parents('tr').fadeOut();
+	            jQuery('.cart-count').each( function(){
+					var count =  jQuery(this).data('count') - 1;
+					jQuery(this).data('count',count).text(count);
+				});
 	        },
 	        error: function(errorThrown){
 	            console.log(errorThrown);

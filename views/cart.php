@@ -16,11 +16,9 @@
 
 	<?php $this->view( 'navigation' ); ?>
 
-	<?php $cart = get_option( 'instant_content_cart', false ); ?>
+	<?php $this->view( 'cart-notice' ); ?>
 
-	<?php if ( sizeof( $cart ) ) : ?>
-	<div class="updated inline below-h2 instant-content-updated"><p><?php _e( 'You have (n) items in your cart.', 'instant-content' ); ?>  <span><a href="#"><?php _e( 'Check Out.', 'instant-content' ); ?></a></span></p></div>
-	<?php endif; ?>
+	<?php $cart = get_option( 'instant_content_cart', false ); ?>
 
 	<?php if ( $cart ) : ?>
 	<form action="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-cart' ) ); ?>" method="post" id="js-instant-content-cart" >
@@ -52,14 +50,5 @@
 		</table>
 	</form>
 	<?php endif; ?>
-
-	<ul>
-		<li>This screen articles saved in cart.</li>
-		<li>Allows user select articles they wish to purchase, and bulk purchase.</li>
-		<li>Allows user to purchase all items saved in cart.</li>
-		<li>Allows users to remove items from cart.</li>
-		<li>Availability check should be done before user is taken to PayPal.</li>
-		<li>Importer script will need to be updated to handle multiple articles.</li>
-	</ul>
 
 </div>

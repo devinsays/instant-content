@@ -25,7 +25,7 @@ $tab_cart = '';
 $cart = get_option( 'instant_content_cart', false );
 if ( $cart ) {
 	if ( sizeof( $cart ) ) {
-		$tab_cart = ' <span data-count"' . sizeof( $cart ) .'">(' . sizeof( $cart ) . ')</span>';
+		$tab_cart = ' (<span class="cart-count" data-count="' . sizeof( $cart ) .'">' . sizeof( $cart ) . '</span>)';
 	}
 }
 ?>
