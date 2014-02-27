@@ -554,8 +554,15 @@ window[ 'instantContentSearch' ] = {
 		data = JSON.parse( data );
 		jQuery('.nav-cart-hidden').removeClass('nav-cart-hidden');
 		jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + instantContentL10n.addedtocart + data.title + '</p></div>').hide().fadeIn();
-		// @Todo Checkout action will need to be updated
-		jQuery( event.target ).text( instantContentL10n.checkout );
+		// Changes cart button to checkout button
+		jQuery( event.target ).text( instantContentL10n.checkout ).unbind().on( 'click', function( event ) {
+			instantContent.checkoutStart( event );
+		});
+		if ( instantContentL10n.cart ) {
+			var cart = JSON.parse( instantContentL10n.cart );
+			cart.push( data.key );
+			instantContentL10n.cart = cart;
+		}
 		jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
 		jQuery('.cart-count').each( function(){
 			var count =  jQuery(this).data('count') + 1;
@@ -620,6 +627,10 @@ window[ 'instantContentSearch' ] = {
 
 		// Bind purchase button click (delegated)
 		jQuery( '.instant-content-cart-notice' ).on( 'click.instantContent', 'button.checkout', instantContent.checkoutStart );
+
+		// Bind purchase button click (delegated)
+		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.purchase', instantContentSearch.purchaseContent );
+
 
 	}
 };
@@ -858,11 +869,16 @@ window[ 'instantContentCart' ] = {
 	        },
 	        success:function(data) {
 	        	// Remove item from the screen
+	        	var total;
 	            jQuery( event.target ).parents('tr').fadeOut();
 	            jQuery('.cart-count').each( function(){
-					var count =  jQuery(this).data('count') - 1;
+	            	var count =  jQuery(this).data('count') - 1;
+	            	total = count;
 					jQuery(this).data('count',count).text(count);
 				});
+				if ( '0' == total ) {
+					jQuery('.instant-content-cart-notice .checkout').fadeOut().remove();
+				}
 	        },
 	        error: function(errorThrown){
 	            console.log(errorThrown);
