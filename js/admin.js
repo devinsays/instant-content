@@ -552,6 +552,7 @@ window[ 'instantContentSearch' ] = {
 	 */
 	cartNotice: function( data, event ) {
 		data = JSON.parse( data );
+		jQuery('.nav-cart-hidden').removeClass('nav-cart-hidden');
 		jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + instantContentL10n.addedtocart + data.title + '</p></div>').hide().fadeIn();
 		// @Todo Checkout action will need to be updated
 		jQuery( event.target ).text( instantContentL10n.checkout );

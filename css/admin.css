@@ -4,6 +4,10 @@ h2.nav-tab-wrapper {
 	margin-bottom:20px;
 }
 
+.nav-cart-hidden {
+	display: none;
+}
+
 .search-box {
 	padding: 5px 15px 10px;
 }

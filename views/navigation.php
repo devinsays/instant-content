@@ -18,16 +18,16 @@ $tab_class['settings'] = 'nav-tab';
 
 $screen = get_current_screen();
 
+$cart = get_option( 'instant_content_cart', array() );
+$tab_cart = ' (<span class="cart-count" data-count="' . sizeof( $cart ) .'">' . sizeof( $cart ) . '</span>)';
+if ( sizeof( $cart ) < 1 ) {
+	// Hide the cart tab if it is empty
+	$tab_class['cart'] = 'nav-cart-hidden nav-tab';
+}
+
 // Substring removes 'admin_page_instant-content-' from $pagenow
 $tab_class[ substr( $screen->base, 27, 100 ) ] = 'nav-tab nav-tab-active';
 
-$tab_cart = '';
-$cart = get_option( 'instant_content_cart', false );
-if ( $cart ) {
-	if ( sizeof( $cart ) ) {
-		$tab_cart = ' (<span class="cart-count" data-count="' . sizeof( $cart ) .'">' . sizeof( $cart ) . '</span>)';
-	}
-}
 ?>
 
 <h2 class="nav-tab-wrapper">
