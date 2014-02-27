@@ -62,55 +62,7 @@ window[ 'instantContent' ] = {
 		jQuery('.instant-content-cart-icon').removeClass('dashicons-cart').addClass('dashicons-admin-generic');
 		jQuery('.instant-content-cart-message').html( instantContentL10n.checkingCart );
 
-		instantContent.getArticleStatus();
-
-
-	},
-
-	/**
-	 * Gets the article status from the API
-	 *
-	 * @since 1.3.0
-	 *
-	 * @function
-	 *
-	 * @param  {jQuery.event} event
-	 * @retuns json object
-	 */
-	getArticleStatus: function() {
-
-		var obj = { 'article_ids' : jQuery.parseJSON( instantContentL10n.cart ) }
-		var ajaxurl = instantContent.buildApiUrl( 'get/article/status', obj );
-
-		jQuery.ajax({
-	        url: ajaxurl,
-	        dataType : 'jsonp',
-	        timeout : 60000,
-	        success:function(data) {
-	        	instantContent.verifyArticleStatus( data );
-	        },
-	        error: function(errorThrown){
-	            console.log(errorThrown);
-	        }
-	    });
-
-	},
-
-	/**
-	 * Verifies the article status
-	 *
-	 * @since 1.3.0
-	 *
-	 * @function
-	 *
-	 * @param  {jQuery.event} event
-	 * @retuns json object
-	 */
-	verifyArticleStatus: function( data ) {
-
-		jQuery( data ).each( function( index, value ) {
-			console.log( value );
-		});
+		instantContent.getCheckoutData();
 
 	},
 
@@ -120,9 +72,6 @@ window[ 'instantContent' ] = {
 	 * @since 1.3.0
 	 *
 	 * @function
-	 *
-	 * @param  {jQuery.event} event
-	 * @retuns json object
 	 */
 	getCheckoutData: function() {
 
@@ -131,8 +80,8 @@ window[ 'instantContent' ] = {
 	        data: {
 	            'action':'instant_content_get_checkout_data',
 	        },
-	        success:function(data) {
-	        	instantContent.checkoutConfirm( jQuery.parseJSON( data ) );
+	        success:function(cart) {
+	        	instantContent.getArticleStatus( cart );
 	        },
 	        error: function(errorThrown){
 	            console.log(errorThrown);
@@ -141,6 +90,78 @@ window[ 'instantContent' ] = {
 
 	},
 
+	/**
+	 * Gets the status of all articles in the cart from the API
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param json cart - json data from the instant_content_cart option
+	 */
+	getArticleStatus: function( cart ) {
+
+		var cart = jQuery.parseJSON( cart );
+		var obj = { 'article_ids' : cart.keys }
+		var ajaxurl = instantContent.buildApiUrl( 'get/article/status', obj );
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        dataType : 'jsonp',
+	        timeout : 60000,
+	        success:function(status) {
+	        	instantContent.verifyArticleStatus( status, cart );
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+
+	},
+
+	/**
+	 * Verifies the status of all articles in the cart
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param json status - data with the status of all articles in the cart
+	 * @param array cart - data from the instant_content_cart option
+	 */
+	verifyArticleStatus: function( status, cart ) {
+
+		console.log(data);
+
+		var remove = [];
+
+		jQuery( status ).each( function( index, article ) {
+			console.log( article );
+			if ( article.status != 'available' ) {
+				remove.push( article.article_id );
+			}
+		});
+
+		if ( remove.length > 0 ) {
+			instantContent.removeCartArticles( remove );
+		} else {
+			instantContent.checkoutConfirm( cart );
+		}
+
+	},
+
+	/**
+	 * Removes articles from the cart
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param array articles - articles to be removed
+	 */
+	removeCartArticles: function( articles ) {
+		// Function to be created to remove articles
+	},
 
 	/**
 	 * Confirms checkout, sets form data
@@ -171,7 +192,6 @@ window[ 'instantContent' ] = {
 			jQuery( '#js-instant-content-cart' ).trigger( 'submit' );
 		}
 	}
-
 };
 
 /**
