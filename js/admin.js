@@ -131,12 +131,9 @@ window[ 'instantContent' ] = {
 	 */
 	verifyArticleStatus: function( status, cart ) {
 
-		console.log(data);
-
 		var remove = [];
 
 		jQuery( status ).each( function( index, article ) {
-			console.log( article );
 			if ( article.status != 'available' ) {
 				remove.push( article.article_id );
 			}
@@ -160,7 +157,50 @@ window[ 'instantContent' ] = {
 	 * @param array articles - articles to be removed
 	 */
 	removeCartArticles: function( articles ) {
-		// Function to be created to remove articles
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        data: {
+	            'action':'instant_content_bulk_remove_from_cart',
+	            'keys'  : articles
+	        },
+	        success:function( data ) {
+	        	instantContent.notifyRemovedArticles( jQuery.parseJSON( data ) );
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+
+	},
+
+	/**
+	 * Notifies user of removed articles
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param array data with articles removed and cart information
+	 */
+	notifyRemovedArticles: function( data ) {
+
+		var confirmText;
+		var articles = data.removed;
+
+		confirmText = 'These articles are no longer available in our content library and have been removed from your cart: \n\n';
+		jQuery( articles ).each( function( index, article ) {
+			confirmText += '- ' + article.title + '\n';
+		});
+		confirmText += '\n';
+
+		if ( data.cart.length > 0 ) {
+			confirmText += 'The remaining articles are still available.  Please click check out again if you wish to continue.';
+		} else {
+			confirmText += 'Sorry about the inconvience.';
+		}
+		var ask = alert( confirmText );
+		window.location.reload();
 	},
 
 	/**

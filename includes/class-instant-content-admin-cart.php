@@ -28,6 +28,8 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 
 		add_action( 'wp_ajax_instant_content_remove_from_cart', array( $this, 'instant_content_remove_from_cart' ) );
 
+		add_action( 'wp_ajax_instant_content_bulk_remove_from_cart', array( $this, 'instant_content_bulk_remove_from_cart' ) );
+
 		add_action( 'wp_ajax_instant_content_get_checkout_data', array( $this, 'instant_content_get_checkout_data' ) );
 
 	}
@@ -144,6 +146,41 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 		$update = update_option( 'instant_content_cart', $cart );
 
 		$ajax['update'] = $update;
+
+		echo json_encode( $ajax );
+
+		// Always die in functions echoing ajax content
+		die();
+	}
+
+	/**
+	 * Remove multiple items from cart
+	 *
+	 * @TODO This could probably be combined with instant_content_remove_from_cart
+	 * @since 1.3.0
+	 */
+	public function instant_content_bulk_remove_from_cart() {
+
+		$cart = get_option( 'instant_content_cart', array() );
+		$return = array();
+
+		// The $_REQUEST contains all the data sent via ajax
+		if ( isset($_REQUEST) ) {
+			$remove = $_REQUEST['keys'];
+		}
+
+		foreach( $cart as $key => $article ) {
+			if ( in_array( $article['key'], $remove ) ) {
+				$return[] = $cart[$key];
+				unset( $cart[$key] );
+			}
+		}
+
+		$update = update_option( 'instant_content_cart', $cart );
+
+		$ajax['update'] = $update;
+		$ajax['removed'] = $return;
+		$ajax['cart'] = $cart;
 
 		echo json_encode( $ajax );
 
