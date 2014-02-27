@@ -127,6 +127,7 @@ abstract class Instant_Content_Admin {
 			'checkout'                => __( 'Check Out', 'instant-content' ),
 			'addtocart'               => __( 'Add to Cart', 'instant-content' ),
 			'addedtocart'        	  => __( 'Item added to cart: ', 'instant-content' ),
+			'checkingCart'        	  => __( 'Checking article availability.', 'instant-content' ),
 			'viewCart'	        	  => __( 'View Cart', 'instant-content' ),
 			'disabled'                => __( 'Disabled', 'instant-content' ),
 			'noResults'               => __( 'No results.', 'instant-content' ),
@@ -138,7 +139,6 @@ abstract class Instant_Content_Admin {
 			'referrer'                => get_site_url(),
 			'settingsUrl'             => menu_page_url( Instant_Content::SLUG . '-settings', false ),
 			'cartUrl'           	  => menu_page_url( Instant_Content::SLUG . '-cart', false ),
-
 
 			// Library
 			'libraryLoaded'           => __( 'Library loaded.

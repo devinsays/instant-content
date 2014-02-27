@@ -58,6 +58,74 @@ window[ 'instantContent' ] = {
 			return;
 		}
 
+		jQuery( event.target ).prop( 'disabled', true );
+		jQuery('.instant-content-cart-icon').removeClass('dashicons-cart').addClass('dashicons-admin-generic');
+		jQuery('.instant-content-cart-message').html( instantContentL10n.checkingCart );
+
+		instantContent.getArticleStatus();
+
+
+	},
+
+	/**
+	 * Gets the article status from the API
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 * @retuns json object
+	 */
+	getArticleStatus: function() {
+
+		var obj = { 'article_ids' : jQuery.parseJSON( instantContentL10n.cart ) }
+		var ajaxurl = instantContent.buildApiUrl( 'get/article/status', obj );
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        dataType : 'jsonp',
+	        timeout : 60000,
+	        success:function(data) {
+	        	instantContent.verifyArticleStatus( data );
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+
+	},
+
+	/**
+	 * Verifies the article status
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 * @retuns json object
+	 */
+	verifyArticleStatus: function( data ) {
+
+		jQuery( data ).each( function( index, value ) {
+			console.log( value );
+		});
+
+	},
+
+	/**
+	 * Gets Checkout Data
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 * @retuns json object
+	 */
+	getCheckoutData: function() {
+
 		jQuery.ajax({
 	        url: ajaxurl,
 	        data: {
@@ -70,7 +138,9 @@ window[ 'instantContent' ] = {
 	            console.log(errorThrown);
 	        }
 	    });
+
 	},
+
 
 	/**
 	 * Confirms checkout, sets form data

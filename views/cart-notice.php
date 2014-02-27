@@ -15,8 +15,8 @@
 <?php if ( sizeof( $cart ) ) : ?>
 	<div class="updated inline below-h2 instant-content-cart-notice">
 		<p>
-		<span class="dashicons dashicons-cart"></span>
-		<?php printf( __( 'You have <span class="cart-count" data-count="%d">%d</span> items in your cart.', 'instant-content'), sizeof( $cart ), sizeof( $cart ) ); ?>
+		<span class="instant-content-cart-icon dashicons dashicons-cart"></span>
+		<span class="instant-content-cart-message"><?php printf( __( 'You have <span class="cart-count" data-count="%d">%d</span> items in your cart.', 'instant-content'), sizeof( $cart ), sizeof( $cart ) ); ?></span>
 		<button type="button" class="button checkout"><?php _e( 'Check Out', 'instant-content' ); ?></button>
 		</p>
 	</div>
