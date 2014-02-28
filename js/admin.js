@@ -59,7 +59,8 @@ window[ 'instantContent' ] = {
 		}
 
 		jQuery( event.target ).prop( 'disabled', true );
-		jQuery('.instant-content-cart-icon').removeClass('dashicons-cart').addClass('dashicons-admin-generic');
+		jQuery('.instant-content-cart-icon');
+		jQuery('.instant-content-cart-message').before('<span class="spinner" style="display:block"></span>')
 		jQuery('.instant-content-cart-message').html( instantContentL10n.checkingCart );
 
 		instantContent.getCheckoutData();
@@ -140,7 +141,7 @@ window[ 'instantContent' ] = {
 		});
 
 		if ( remove.length > 0 ) {
-			instantContent.removeCartArticles( remove );
+			instantContent.removeCartArticles( remove, true );
 		} else {
 			instantContent.checkoutConfirm( cart );
 		}
@@ -156,7 +157,7 @@ window[ 'instantContent' ] = {
 	 *
 	 * @param array articles - articles to be removed
 	 */
-	removeCartArticles: function( articles ) {
+	removeCartArticles: function( articles, notify ) {
 
 		jQuery.ajax({
 	        url: ajaxurl,
@@ -165,7 +166,9 @@ window[ 'instantContent' ] = {
 	            'keys'  : articles
 	        },
 	        success:function( data ) {
-	        	instantContent.notifyRemovedArticles( jQuery.parseJSON( data ) );
+	        	if ( notify ) {
+	        		instantContent.notifyRemovedArticles( jQuery.parseJSON( data ) );
+	        	}
 	        },
 	        error: function(errorThrown){
 	            console.log(errorThrown);
@@ -187,6 +190,8 @@ window[ 'instantContent' ] = {
 
 		var confirmText;
 		var articles = data.removed;
+
+		jQuery( '.instant-content-cart-notice .spinner' ).hide();
 
 		confirmText = 'These articles are no longer available in our content library and have been removed from your cart: \n\n';
 		jQuery( articles ).each( function( index, article ) {
@@ -230,6 +235,8 @@ window[ 'instantContent' ] = {
 			};
 			jQuery( '#js-paypal-cart-custom' ).val( JSON.stringify( custom ) );
 			jQuery( '#js-instant-content-cart' ).trigger( 'submit' );
+		} else {
+			jQuery( '.instant-content-cart-notice .spinner' ).hide();
 		}
 	}
 };
@@ -555,7 +562,7 @@ window[ 'instantContentSearch' ] = {
 		jQuery('.nav-cart-hidden').removeClass('nav-cart-hidden');
 		jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + instantContentL10n.addedtocart + data.title + '</p></div>').hide().fadeIn();
 		// Changes cart button to checkout button
-		jQuery( event.target ).text( instantContentL10n.checkout ).unbind().on( 'click', function( event ) {
+		jQuery( event.target ).text( instantContentL10n.checkout ).unbind().on( 'click.instantContent', function( event ) {
 			instantContent.checkoutStart( event );
 		});
 		if ( instantContentL10n.cart ) {
@@ -719,7 +726,9 @@ window[ 'instantContentLibrary' ] = {
 	 */
 	librarySuccess: function( data ) {
 		'use strict';
-		var rows = [];
+		var rows = [],
+			cart = JSON.parse( instantContentL10n.cart ),
+			remove = [];
 
 		jQuery( '#js-results-table > tr' ).remove();
 
@@ -734,18 +743,31 @@ window[ 'instantContentLibrary' ] = {
 		jQuery( '.tablenav' ).show();
 		jQuery( '.tablenav-pages' ).show();
 
-		// Loop through the results and build table markup
+		// Loop through the results
 		jQuery.each( data.results, function() {
+
+			// Build table markup
 			rows.push( instantContentLibrary.buildLibraryResultRow( this ) );
+
+			// Check if key is in the cart and should be removed
+			if ( cart.indexOf( this.key ) > -1 ) {
+				remove.push( this.key );
+			}
 		});
 
-		// Joining first means there should only be one append of a large string, instead of lots of smaller row strings appends,
+		// Joining first means there should only be one append of a large string,
+		// instead of lots of smaller row strings appends,
 		// which is better for performance.
 		jQuery( '#js-results-table' ).append( rows.join( '' ) );
 
 		jQuery( '#js-table-footer' ).show();
 
 		instantContentLibrary.showMessage( instantContentL10n.libraryLoaded );
+
+		// If items need to be removed from the cart
+		if ( remove.length > 0 ) {
+			instantContent.removeCartArticles( remove, false );
+		}
 	},
 
 	/**

@@ -20,7 +20,7 @@
 
 	<?php $cart = get_option( 'instant_content_cart', false ); ?>
 
-	<?php if ( $cart ) : ?>
+	<?php if ( $cart ) { ?>
 	<form action="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-cart' ) ); ?>" method="post" id="js-instant-content-cart" >
 		<table class="wp-list-table widefat fixed posts" cellspacing="0">
 			<thead>
@@ -49,6 +49,13 @@
 
 		</table>
 	</form>
-	<?php endif; ?>
+	<?php } else { ?>
+		<div class="updated inline below-h2 instant-content-cart-notice">
+		<p>
+		<span class="instant-content-cart-icon dashicons dashicons-cart"></span>
+		<span class="instant-content-cart-message"><?php _e( 'There are no items in your cart.', 'instant-content' ); ?></span>
+		</p>
+		</div>
+	<?php } ?>
 
 </div>
