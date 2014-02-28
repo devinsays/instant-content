@@ -32,6 +32,14 @@ abstract class Instant_Content_Admin {
 	protected $library_hook  = null;
 
 	/**
+	 * Page hook for the cart screen.
+	 *
+	 * @since 1.0.0
+	 * @type string
+	 */
+	protected $cart_hook  = null;
+
+	/**
 	 * Page hook for the settings screen.
 	 *
 	 * @since 1.0.0
@@ -115,6 +123,12 @@ abstract class Instant_Content_Admin {
 			// Search
 			'loading'                 => __( 'Loading articles. Please wait...', 'instant-content' ),
 			'purchase'                => __( 'Purchase', 'instant-content' ),
+			'purchasenow'             => __( 'Purchase Now', 'instant-content' ),
+			'checkout'                => __( 'Check Out', 'instant-content' ),
+			'addtocart'               => __( 'Add to Cart', 'instant-content' ),
+			'addedtocart'        	  => __( 'Item added to cart: ', 'instant-content' ),
+			'checkingCart'        	  => __( 'Checking article availability.', 'instant-content' ),
+			'viewCart'	        	  => __( 'View Cart', 'instant-content' ),
 			'disabled'                => __( 'Disabled', 'instant-content' ),
 			'noResults'               => __( 'No results.', 'instant-content' ),
 			'aboutToPurchase'         => __( 'You are about to purchase the article', 'instant-content' ),
@@ -124,6 +138,7 @@ abstract class Instant_Content_Admin {
 			'license'                 => isset( $options['license'] ) ? $options['license'] : '',
 			'referrer'                => get_site_url(),
 			'settingsUrl'             => menu_page_url( Instant_Content::SLUG . '-settings', false ),
+			'cartUrl'           	  => menu_page_url( Instant_Content::SLUG . '-cart', false ),
 
 			// Library
 			'libraryLoaded'           => __( 'Library loaded.
@@ -143,9 +158,28 @@ abstract class Instant_Content_Admin {
 
 			// API
 			'apiBaseUrl'       => Instant_Content::API_BASE_URL,
+
+			// Items in cart
+			'cart'       => json_encode( $this->display_cart_keys() ),
 		);
 
 		wp_localize_script( Instant_Content::SLUG . '-admin-script', 'instantContentL10n', $l10n );
+	}
+
+	/**
+	 * Outputs article keys of items saved in the cart
+	 *
+	 * @since 1.3.0
+	 */
+	public function display_cart_keys() {
+		$cart = get_option( 'instant_content_cart', false );
+		if ( $cart ) :
+			foreach( $cart as $key => $article ) {
+				$cartkeys[] = $article['key'];
+			}
+			$cart = $cartkeys;
+		endif;
+		return $cart;
 	}
 
 	/**
@@ -159,6 +193,7 @@ abstract class Instant_Content_Admin {
 		return array(
 			'posts_page_instant-content-search',
 			'admin_page_instant-content-library',
+			'admin_page_instant-content-cart',
 			'admin_page_instant-content-import',
 			'admin_page_instant-content-settings',
 		);

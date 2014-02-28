@@ -4,6 +4,14 @@ h2.nav-tab-wrapper {
 	margin-bottom:20px;
 }
 
+.nav-cart-hidden {
+	display: none;
+}
+
+.search-box {
+	padding: 5px 15px 10px;
+}
+
 .results-table td {
 	padding: 15px 7px;
 }
@@ -16,8 +24,16 @@ h2.nav-tab-wrapper {
 	border: none;
 }
 
+.tablenav {
+	display: none;
+}
+
 .widefat .column-date {
 	width: 180px;
+}
+
+.widefat td, .widefat th {
+	padding: 8px 7px;
 }
 
 .widefat .tr-info td {
@@ -26,6 +42,23 @@ h2.nav-tab-wrapper {
 
 .instant-content-updated .waiting {
 	margin: 0 10px -3px 0;
+}
+
+.instant-content-cart-notice .button {
+	margin-left:20px;
+}
+
+.instant-content-cart-notice .dashicons-cart {
+	margin:0 10px 0 0;
+}
+
+.cart-icon {
+	font-family: "dashicons";
+	content: "\f100";
+}
+
+.item-in-cart {
+	background: #fafafa;
 }
 
 .tablenav .tablenav-pages {

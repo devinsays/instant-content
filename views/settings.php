@@ -14,11 +14,7 @@
 	<?php screen_icon( 'post' ); ?>
 	<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 
-	<h2 class="nav-tab-wrapper">
-		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-search' ) ); ?>" class="nav-tab"><?php _e( 'Find Content', 'instant-content' ); ?></a>
-		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-library' ) ); ?>" class="nav-tab"><?php _e( 'Library', 'instant-content' ); ?></a>
-		<a href="<?php esc_url( menu_page_url( Instant_Content::SLUG . '-settings' ) ); ?>" class="nav-tab nav-tab-active"><?php _e( 'Settings', 'instant-content' ); ?></a>
-	</h2>
+	<?php $this->view( 'navigation' ); ?>
 
 	<?php settings_errors( 'instantcontent_settings', false, true ); ?>
 

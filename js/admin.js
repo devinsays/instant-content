@@ -39,8 +39,206 @@ window[ 'instantContent' ] = {
 	buildApiUrl: function( endPoint, args ) {
 		'use strict';
 		return instantContentL10n.apiBaseUrl + endPoint + '?json=' + JSON.stringify( args );
-	}
+	},
 
+	/**
+	 * Fetches data for cart checkout
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	checkoutStart: function( event ) {
+		event.preventDefault();
+
+		if ( !instantContentL10n.hasValidLicenseAndTerms ) {
+			alert( instantContentL10n.enterKeyPurchase );
+			return;
+		}
+
+		jQuery( event.target ).prop( 'disabled', true );
+		jQuery('.instant-content-cart-icon');
+		jQuery('.instant-content-cart-message').before('<span class="spinner" style="display:block"></span>')
+		jQuery('.instant-content-cart-message').html( instantContentL10n.checkingCart );
+
+		instantContent.getCheckoutData();
+
+	},
+
+	/**
+	 * Gets Checkout Data
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 */
+	getCheckoutData: function() {
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        data: {
+	            'action':'instant_content_get_checkout_data',
+	        },
+	        success:function(cart) {
+	        	instantContent.getArticleStatus( cart );
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+
+	},
+
+	/**
+	 * Gets the status of all articles in the cart from the API
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param json cart - json data from the instant_content_cart option
+	 */
+	getArticleStatus: function( cart ) {
+
+		var cart = jQuery.parseJSON( cart );
+		var obj = { 'article_ids' : cart.keys }
+		var ajaxurl = instantContent.buildApiUrl( 'get/article/status', obj );
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        dataType : 'jsonp',
+	        timeout : 60000,
+	        success:function(status) {
+	        	instantContent.verifyArticleStatus( status, cart );
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+
+	},
+
+	/**
+	 * Verifies the status of all articles in the cart
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param json status - data with the status of all articles in the cart
+	 * @param array cart - data from the instant_content_cart option
+	 */
+	verifyArticleStatus: function( status, cart ) {
+
+		var remove = [];
+
+		jQuery( status ).each( function( index, article ) {
+			if ( article.status != 'available' ) {
+				remove.push( article.article_id );
+			}
+		});
+
+		if ( remove.length > 0 ) {
+			instantContent.removeCartArticles( remove, true );
+		} else {
+			instantContent.checkoutConfirm( cart );
+		}
+
+	},
+
+	/**
+	 * Removes articles from the cart
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param array articles - articles to be removed
+	 */
+	removeCartArticles: function( articles, notify ) {
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        data: {
+	            'action':'instant_content_bulk_remove_from_cart',
+	            'keys'  : articles
+	        },
+	        success:function( data ) {
+	        	if ( notify ) {
+	        		instantContent.notifyRemovedArticles( jQuery.parseJSON( data ) );
+	        	}
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+
+	},
+
+	/**
+	 * Notifies user of removed articles
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param array data with articles removed and cart information
+	 */
+	notifyRemovedArticles: function( data ) {
+
+		var confirmText;
+		var articles = data.removed;
+
+		jQuery( '.instant-content-cart-notice .spinner' ).hide();
+
+		confirmText = 'These articles are no longer available in our content library and have been removed from your cart: \n\n';
+		jQuery( articles ).each( function( index, article ) {
+			confirmText += '- ' + article.title + '\n';
+		});
+		confirmText += '\n';
+
+		if ( data.cart.length > 0 ) {
+			confirmText += 'The remaining articles are still available.  Please click check out again if you wish to continue.';
+		} else {
+			confirmText += 'Sorry about the inconvience.';
+		}
+		var ask = alert( confirmText );
+		window.location.reload();
+	},
+
+	/**
+	 * Confirms checkout, sets form data
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	checkoutConfirm: function( data ) {
+
+		var custom, confirmText, item;
+
+		confirmText = 'You are about to purchase ' + data.count + ' articles from your cart for $' + data.total_price + '.\n\n';
+		confirmText += instantContentL10n.takenToPayPal + '\n\n' + instantContentL10n.clickOk;
+		item = 'Instant Content Articles (' + data.count + ')';
+
+		if ( confirm( confirmText ) ) {
+			jQuery( '#js-paypal-cart-item' ).val( item );
+			jQuery( '#js-paypal-cart-amount' ).val( data.total_price );
+			custom = {
+				article_keys: data.keys,
+				license_key: instantContentL10n.license,
+				purchaser_domain: instantContentL10n.referrer
+			};
+			jQuery( '#js-paypal-cart-custom' ).val( JSON.stringify( custom ) );
+			jQuery( '#js-instant-content-cart' ).trigger( 'submit' );
+		} else {
+			jQuery( '.instant-content-cart-notice .spinner' ).hide();
+		}
+	}
 };
 
 /**
@@ -152,6 +350,7 @@ window[ 'instantContentSearch' ] = {
 
 		// Hide pagination, and clear existing result rows
 		jQuery( '.tablenav-pages' ).hide();
+		jQuery( '.tablenav' ).hide();
 		jQuery( '#js-results-table > tr' ).remove();
 
 		// If no results, abandon now.
@@ -195,9 +394,15 @@ window[ 'instantContentSearch' ] = {
 		'use strict';
 		var settingsUrl = instantContentL10n.settingsUrl,
 			previewUrl  = instantContentSearch.buildPreviewUrl( doc.key ),
-			row;
+			row,
+			cart = false;
 
-		row = '<tr>';
+		if ( instantContentL10n.cart.indexOf( doc.key ) > -1 ) {
+			cart = true;
+			row = '<tr class="item-in-cart">';
+		} else {
+			row = '<tr>';
+		}
 		row += '<td></td>';
 		row += '<td class="title">' + doc.title + '</td>';
 		row += '<td class="summary">' + doc.summary + '</td>';
@@ -210,7 +415,12 @@ window[ 'instantContentSearch' ] = {
 		}
 
 		row += '<td class="price">$ ' + doc.price + '</td>';
-		row += '<td><button type="button" class="button purchase" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.purchase + '</a></td>';
+		if (cart) {
+			row += '<td><a href="' + instantContentL10n.cartUrl + '">' + instantContentL10n.viewCart + '</a></td>';
+		} else {
+			row += '<td><button type="button" class="button addtocart" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.addtocart + '</button></td>';
+		}
+		row += '<td><button type="button" class="button purchase" data-title="' + doc.title + '" data-price="' + doc.price + '" data-key="' + doc.key + '">' + instantContentL10n.purchasenow + '</button></td>';
 		row += '</tr>';
 		return row;
 	},
@@ -305,8 +515,66 @@ window[ 'instantContentSearch' ] = {
 				instantContentSearch.instantSearch( instantContentSearch.offset + instantContentSearch.maxItems );
 			});
 		}
-
+		jQuery( '.tablenav' ).show();
 		jQuery( '.tablenav-pages' ).show();
+	},
+
+	/**
+	 * Add the article to the cart for checkout
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	addToCart: function( event ) {
+		event.preventDefault();
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        data: {
+	            'action':'instant_content_add_to_cart',
+	            'title' : jQuery( event.target ).data( 'title' ),
+	            'price' : jQuery( event.target ).attr( 'data-price' ),
+	            'key'   : jQuery( event.target ).data( 'key' ).toString()
+	        },
+	        success:function(data) {
+	            instantContentSearch.cartNotice( data, event );
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+	},
+
+	/**
+	 * Displays notice that item was added to cart
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	cartNotice: function( data, event ) {
+		data = JSON.parse( data );
+		jQuery('.nav-cart-hidden').removeClass('nav-cart-hidden');
+		jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + instantContentL10n.addedtocart + data.title + '</p></div>').hide().fadeIn();
+		// Changes cart button to checkout button
+		jQuery( event.target ).text( instantContentL10n.checkout ).unbind().on( 'click.instantContent', function( event ) {
+			instantContent.checkoutStart( event );
+		});
+		if ( instantContentL10n.cart ) {
+			var cart = JSON.parse( instantContentL10n.cart );
+			cart.push( data.key );
+			instantContentL10n.cart = cart;
+		}
+		jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
+		jQuery('.cart-count').each( function(){
+			var count =  jQuery(this).data('count') + 1;
+			jQuery(this).data('count',count).text(count);
+		});
 	},
 
 	/**
@@ -362,7 +630,14 @@ window[ 'instantContentSearch' ] = {
 		jQuery( '#js-search-submit' ).on( 'click.instantContent', instantContentSearch.searchIfPopulated );
 
 		// Bind purchase button click (delegated)
+		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.addtocart', instantContentSearch.addToCart );
+
+		// Bind purchase button click (delegated)
+		jQuery( '.instant-content-cart-notice' ).on( 'click.instantContent', 'button.checkout', instantContent.checkoutStart );
+
+		// Bind purchase button click (delegated)
 		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.purchase', instantContentSearch.purchaseContent );
+
 
 	}
 };
@@ -451,7 +726,9 @@ window[ 'instantContentLibrary' ] = {
 	 */
 	librarySuccess: function( data ) {
 		'use strict';
-		var rows = [];
+		var rows = [],
+			cart = JSON.parse( instantContentL10n.cart ),
+			remove = [];
 
 		jQuery( '#js-results-table > tr' ).remove();
 
@@ -463,20 +740,34 @@ window[ 'instantContentLibrary' ] = {
 		// Update and show pagination
 		jQuery( '.displaying-num' ).text( data.results.length + ' / ' + data.count + ' ' + instantContentL10n[ 'items' ] );
 		jQuery( '.pagination-links' ).hide(); // Temporarily hide the pagination buttons, as these aren't working yet
+		jQuery( '.tablenav' ).show();
 		jQuery( '.tablenav-pages' ).show();
 
-		// Loop through the results and build table markup
+		// Loop through the results
 		jQuery.each( data.results, function() {
+
+			// Build table markup
 			rows.push( instantContentLibrary.buildLibraryResultRow( this ) );
+
+			// Check if key is in the cart and should be removed
+			if ( cart.indexOf( this.key ) > -1 ) {
+				remove.push( this.key );
+			}
 		});
 
-		// Joining first means there should only be one append of a large string, instead of lots of smaller row strings appends,
+		// Joining first means there should only be one append of a large string,
+		// instead of lots of smaller row strings appends,
 		// which is better for performance.
 		jQuery( '#js-results-table' ).append( rows.join( '' ) );
 
 		jQuery( '#js-table-footer' ).show();
 
 		instantContentLibrary.showMessage( instantContentL10n.libraryLoaded );
+
+		// If items need to be removed from the cart
+		if ( remove.length > 0 ) {
+			instantContent.removeCartArticles( remove, false );
+		}
 	},
 
 	/**
@@ -565,6 +856,79 @@ window[ 'instantContentLibrary' ] = {
 
 		// Bind import button (delegated)
 		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.import-content', instantContentLibrary.importContent );
+	}
+};
+
+/**
+ * Holds cart page values in an object to avoid polluting global namespace.
+ *
+ * @since 1.3.0
+ *
+ * @constructor
+ */
+window[ 'instantContentCart' ] = {
+
+	/**
+	 * Remove an article from the cart
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 *
+	 * @param  {jQuery.event} event
+	 */
+	removeFromCart: function( event ) {
+		event.preventDefault();
+
+		// Give user indication that action has started
+		jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
+
+		jQuery.ajax({
+	        url: ajaxurl,
+	        data: {
+	            'action':'instant_content_remove_from_cart',
+	            'key'   : jQuery( event.target ).data( 'key' ).toString()
+	        },
+	        success:function(data) {
+	        	// Remove item from the screen
+	        	var total;
+	            jQuery( event.target ).parents('tr').fadeOut();
+	            jQuery('.cart-count').each( function(){
+	            	var count =  jQuery(this).data('count') - 1;
+	            	total = count;
+					jQuery(this).data('count',count).text(count);
+				});
+				if ( '0' == total ) {
+					jQuery('.instant-content-cart-notice .checkout').fadeOut().remove();
+				}
+	        },
+	        error: function(errorThrown){
+	            console.log(errorThrown);
+	        }
+	    });
+	},
+
+	/**
+	 * Initialises all aspects of the scripts.
+	 *
+	 * Generally ordered with stuff that inserts new elements into the DOM first,
+	 * then stuff that triggers an event on existing DOM elements when ready,
+	 * followed by stuff that triggers an event only on user interaction. This
+	 * keeps any screen jumping from occuring later on.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @function
+	 */
+	ready: function() {
+		'use strict';
+
+		// Bind purchase button click (delegated)
+		jQuery( '#js-results-table' ).on( 'click.instantContent', 'button.remove', instantContentCart.removeFromCart );
+
+		// Bind purchase button click (delegated)
+		jQuery( '.instant-content-cart-notice' ).on( 'click.instantContent', 'button.checkout', instantContent.checkoutStart );
+
 	}
 };
 
@@ -686,4 +1050,6 @@ if ( pagenow === 'posts_page_instant-content-search' ) {
 	jQuery( instantContentLibrary.ready );
 } else if ( pagenow === 'admin_page_instant-content-import' ) {
 	jQuery( instantContentImporter.ready );
+} else if ( pagenow === 'admin_page_instant-content-cart' ) {
+	jQuery( instantContentCart.ready );
 }
