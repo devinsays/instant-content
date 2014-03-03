@@ -567,7 +567,11 @@ window[ 'instantContentSearch' ] = {
 		});
 		if ( instantContentL10n.cart ) {
 			var cart = JSON.parse( instantContentL10n.cart );
-			cart.push( data.key );
+			if ( cart.constructor == Array) {
+				cart.push( data.key );
+			} else {
+				cart = [ data.key ];
+			}
 			instantContentL10n.cart = cart;
 		}
 		jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
