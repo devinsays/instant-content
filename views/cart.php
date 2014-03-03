@@ -29,7 +29,6 @@
 					<th scope="col" class="manage-column column-title"><?php _e( 'Title', 'instant-content' ); ?></th>
 					<th scope="col" class="manage-column column-price" width="100px"><?php _e( 'Price', 'instant-content' ); ?></th>
 					<th scope="col" class="manage-column column-remove" width="200px"><?php _e( 'Cart', 'instant-content' ); ?></th>
-					<th scope="col" class="manage-column column-purchase" width="200px"><?php _e( 'Purchase', 'instant-content' ); ?></th>
 				</tr>
 			</thead>
 
@@ -41,7 +40,6 @@
 				<td class="title"><?php echo $article['title']; ?></td>
 				<td class="price">$<?php echo $article['price']; ?></td>
 				<td><button type="button" class="button remove" data-key="<?php echo $article['key']; ?>"><?php _e( 'Remove', 'instant-content' ); ?></button></td>
-				<td><button type="button" class="button remove" data-key="<?php echo $article['key']; ?>"><?php _e( 'Purchase', 'instant-content' ); ?></button></td>
 			</tr>
 			<?php } ?>
 
