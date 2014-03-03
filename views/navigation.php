@@ -24,6 +24,8 @@ if ( is_array( $cart ) ) {
 	$cart_count = sizeof( $cart );
 } else {
 	$cart_count = 0;
+}
+if ( $cart_count == 0) {
 	$tab_class['cart'] = 'nav-cart-hidden nav-tab';
 }
 $tab_cart = ' (<span class="cart-count" data-count="' . $cart_count .'">' . $cart_count . '</span>)';
