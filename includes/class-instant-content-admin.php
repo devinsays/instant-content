@@ -116,9 +116,11 @@ abstract class Instant_Content_Admin {
 
 		$options = get_option( 'instant_content', false );
 
+		$validTerms = ( 'valid' === $options['license_status'] && isset( $options['terms'] ) && $options['terms'] );
+
 		$l10n = array(
 			// Common
-			'hasValidLicenseAndTerms' => 'valid' === $options['license_status'] && $options['terms'],
+			'hasValidLicenseAndTerms' => $validTerms,
 
 			// Search
 			'loading'                 => __( 'Loading articles. Please wait...', 'instant-content' ),
@@ -134,7 +136,7 @@ abstract class Instant_Content_Admin {
 			'aboutToPurchase'         => __( 'You are about to purchase the article', 'instant-content' ),
 			'takenToPayPal'           => __( 'You will be taken to a PayPal screen to complete the payment, and then returned to your WordPress library.', 'instant-content' ),
 			'clickOk'                 => __( 'Click OK to continue.', 'instant-content' ),
-			'enterKeyPurchase'        => __( 'Please enter a valid license key and agree to plugin terms to purchase content.', 'instant-content' ),
+			'enterKeyPurchase'        => __( 'Please enter a valid license key and agree to plugin terms to purchase content.  You can do this on the settings page.', 'instant-content' ),
 			'license'                 => isset( $options['license'] ) ? $options['license'] : '',
 			'referrer'                => get_site_url(),
 			'settingsUrl'             => menu_page_url( Instant_Content::SLUG . '-settings', false ),
