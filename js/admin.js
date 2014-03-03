@@ -560,7 +560,12 @@ window[ 'instantContentSearch' ] = {
 	cartNotice: function( data, event ) {
 		data = JSON.parse( data );
 		jQuery('.nav-cart-hidden').removeClass('nav-cart-hidden');
-		jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + instantContentL10n.addedtocart + data.title + '</p></div>').hide().fadeIn();
+		noticeText = instantContentL10n.addedtocart + data.title;
+		if ( jQuery('.instant-content-updated').length > 0 ) {
+			jQuery('.instant-content-updated p').fadeOut().text( noticeText ).fadeIn();
+		} else {
+			jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + noticeText + '</p></div>').hide().fadeIn();
+		}
 		// Changes cart button to checkout button
 		jQuery( event.target ).text( instantContentL10n.checkout ).unbind().on( 'click.instantContent', function( event ) {
 			instantContent.checkoutStart( event );
