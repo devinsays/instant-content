@@ -584,7 +584,7 @@ window[ 'instantContentSearch' ] = {
 				} else {
 					cart = [ data.key ];
 				}
-				instantContentL10n.cart = cart;
+				instantContentL10n.cart = JSON.stringify( cart );
 			}
 			jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
 			jQuery('.cart-count').each( function(){
