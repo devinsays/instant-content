@@ -559,31 +559,39 @@ window[ 'instantContentSearch' ] = {
 	 */
 	cartNotice: function( data, event ) {
 		data = JSON.parse( data );
-		jQuery('.nav-cart-hidden').removeClass('nav-cart-hidden');
-		noticeText = instantContentL10n.addedtocart + data.title;
-		if ( jQuery('.instant-content-updated').length > 0 ) {
-			jQuery('.instant-content-updated p').fadeOut().text( noticeText ).fadeIn();
-		} else {
+
+		if ( !data.update ) {
+			// If the item was not successfully added to the cart
+			noticeText = "There was an error adding this item to the cart.  Please refresh and try again.";
 			jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + noticeText + '</p></div>').hide().fadeIn();
-		}
-		// Changes cart button to checkout button
-		jQuery( event.target ).text( instantContentL10n.checkout ).unbind().on( 'click.instantContent', function( event ) {
-			instantContent.checkoutStart( event );
-		});
-		if ( instantContentL10n.cart ) {
-			var cart = JSON.parse( instantContentL10n.cart );
-			if ( cart.constructor == Array) {
-				cart.push( data.key );
+		} else {
+			// If the item was added to the cart
+			jQuery('.nav-cart-hidden').removeClass('nav-cart-hidden');
+			noticeText = instantContentL10n.addedtocart + data.title;
+			if ( jQuery('.instant-content-updated').length > 0 ) {
+				jQuery('.instant-content-updated p').fadeOut().text( noticeText ).fadeIn();
 			} else {
-				cart = [ data.key ];
+				jQuery('#search_box').after('<div class="updated inline below-h2 instant-content-updated"><p>' + noticeText + '</p></div>').hide().fadeIn();
 			}
-			instantContentL10n.cart = cart;
+			// Changes cart button to checkout button
+			jQuery( event.target ).text( instantContentL10n.checkout ).unbind().on( 'click.instantContent', function( event ) {
+				instantContent.checkoutStart( event );
+			});
+			if ( instantContentL10n.cart ) {
+				var cart = JSON.parse( instantContentL10n.cart );
+				if ( cart.constructor == Array) {
+					cart.push( data.key );
+				} else {
+					cart = [ data.key ];
+				}
+				instantContentL10n.cart = cart;
+			}
+			jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
+			jQuery('.cart-count').each( function(){
+				var count =  jQuery(this).data('count') + 1;
+				jQuery(this).data('count',count).text(count);
+			});
 		}
-		jQuery( event.target ).parents('tr').css({ 'background' : '#fafafa' });
-		jQuery('.cart-count').each( function(){
-			var count =  jQuery(this).data('count') + 1;
-			jQuery(this).data('count',count).text(count);
-		});
 	},
 
 	/**

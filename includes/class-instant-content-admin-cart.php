@@ -101,18 +101,33 @@ class Instant_Content_Admin_Cart extends Instant_Content_Admin {
 			$key = $_REQUEST['key'];
 		}
 
-		$cart[] = array(
-			'title' => $title,
-			'price' => $price,
-			'key' => $key,
-		);
+		// Check if the key being added is a duplicate.
+		// Edge case for multiple users adding content.
+		$duplicate = false;
+		foreach( $cart as $cartkey => $article ) {
+			if ( intval( $key ) == intval( $article['key'] ) ) {
+				$duplicate = true;
+			}
+		}
 
-		$update = update_option( 'instant_content_cart', $cart );
+		if ( ! $duplicate ) {
 
-		$ajax['update'] = $update;
-		$ajax['title'] = $title;
-		$ajax['price'] = $price;
-		$ajax['key'] = $key;
+			$cart[] = array(
+				'title' => $title,
+				'price' => $price,
+				'key' => $key,
+			);
+
+			$update = update_option( 'instant_content_cart', $cart );
+
+			$ajax['update'] = $update;
+			$ajax['title'] = $title;
+			$ajax['price'] = $price;
+			$ajax['key'] = $key;
+
+		} else {
+			$ajax['update'] = false;
+		}
 
 		echo json_encode( $ajax );
 
