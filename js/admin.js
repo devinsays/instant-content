@@ -567,6 +567,7 @@ window[ 'instantContentSearch' ] = {
 		} else {
 			// If the item was added to the cart
 			jQuery('.nav-cart-hidden').removeClass('nav-cart-hidden');
+			jQuery('.instant-content-cart-notice').removeClass('hidden');
 			noticeText = instantContentL10n.addedtocart + data.title;
 			if ( jQuery('.instant-content-updated').length > 0 ) {
 				jQuery('.instant-content-updated p').fadeOut().text( noticeText ).fadeIn();
