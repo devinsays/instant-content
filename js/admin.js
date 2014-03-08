@@ -768,7 +768,7 @@ window[ 'instantContentLibrary' ] = {
 			rows.push( instantContentLibrary.buildLibraryResultRow( this ) );
 
 			// Check if key is in the cart and should be removed
-			if ( cart.indexOf( this.key ) > -1 ) {
+			if ( cart && ( cart.indexOf( this.key ) > -1 ) ) {
 				remove.push( this.key );
 			}
 		});
