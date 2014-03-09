@@ -146,6 +146,7 @@ abstract class Instant_Content_Admin {
 			'libraryLoaded'           => __( 'Library loaded.
 			New purchases may take a few minutes to appear.', 'instant-content' ),
 			'import'                  => __( 'Import', 'instant-content' ),
+			'reimport'                => __( 'Re-Import', 'instant-content' ),
 			'invalidKey'              => __( 'License key is invalid.', 'instant-content' ),
 			'enterKeyLibrary'         => __( 'Please enter a valid license key to view purchased content.', 'instant-content' ),
 			'noPurchases'             => __( 'No purchases.', 'instant-content' ),
@@ -163,6 +164,9 @@ abstract class Instant_Content_Admin {
 
 			// Items in cart
 			'cart'       => json_encode( $this->display_cart_keys() ),
+
+			// Items imported
+			'imported'       => $this->display_imported_keys( $options ),
 		);
 
 		wp_localize_script( Instant_Content::SLUG . '-admin-script', 'instantContentL10n', $l10n );
@@ -172,6 +176,7 @@ abstract class Instant_Content_Admin {
 	 * Outputs article keys of items saved in the cart
 	 *
 	 * @since 1.3.0
+	 * @return array of cart keys
 	 */
 	public function display_cart_keys() {
 		$cart = get_option( 'instant_content_cart', false );
@@ -182,6 +187,22 @@ abstract class Instant_Content_Admin {
 			$cart = $cartkeys;
 		endif;
 		return $cart;
+	}
+
+	/**
+	 * Outputs article keys that have been imported
+	 *
+	 * @since 1.4.0
+	 *
+	 * @param array instant_content options
+	 * @return array of imported article keys
+	 */
+	public function display_imported_keys( $options ) {
+		if ( $options && isset( $options['imported'] ) ) {
+			return $options['imported'];
+		}
+
+		return array();
 	}
 
 	/**

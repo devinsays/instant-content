@@ -746,6 +746,7 @@ window[ 'instantContentLibrary' ] = {
 		'use strict';
 		var rows = [],
 			cart = JSON.parse( instantContentL10n.cart ),
+			imported = instantContentL10n.imported,
 			remove = [];
 
 		jQuery( '#js-results-table > tr' ).remove();
@@ -765,7 +766,7 @@ window[ 'instantContentLibrary' ] = {
 		jQuery.each( data.results, function() {
 
 			// Build table markup
-			rows.push( instantContentLibrary.buildLibraryResultRow( this ) );
+			rows.push( instantContentLibrary.buildLibraryResultRow( this, imported ) );
 
 			// Check if key is in the cart and should be removed
 			if ( cart && ( cart.indexOf( this.key ) > -1 ) ) {
@@ -799,16 +800,22 @@ window[ 'instantContentLibrary' ] = {
 	 *
 	 * @return {String}     Table row markup.
 	 */
-	buildLibraryResultRow: function( doc ) {
+	buildLibraryResultRow: function( doc, imported ) {
 		'use strict';
 		var row,
-			date = doc.date.text.replace( 'datetime(', '' ).replace( ' UTC)', '' );
+			date = doc.date.text.replace( 'datetime(', '' ).replace( ' UTC)', '' ),
+			isImport = jQuery.inArray( doc.key, imported ),
+			btnText = instantContentL10n['import'];
+
+		if ( isImport >= 0 ) {
+			btnText = instantContentL10n['reimport'];
+		}
 
 		row  = '<tr>';
 		row += '<td></td>';
 		row += '<td class="title">' + doc.title + '</td>';
 		row += '<td class="date">' + date + '</td>';
-		row += '<td><button type="button" class="button import-content" data-key="' + doc.key + '">' + instantContentL10n['import'] + '</button></td>';
+		row += '<td><button type="button" class="button import-content" data-key="' + doc.key + '">' + btnText + '</button></td>';
 		row += '</tr>';
 		return row;
 	},

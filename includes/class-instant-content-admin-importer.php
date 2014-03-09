@@ -124,6 +124,26 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 			$this->instant_sideload_image( $file, $post_id, $caption );
 		}
 
+		// Update instant_content options to include list of imported items
+		if ( $post_id ) {
+			$options = get_option( 'instant_content', false );
+			// Items will not be added if the settings haven't been set
+			if ( $options ) {
+				if ( is_array( $options['imported'] ) ) {
+					// Ensures duplicate keys are not added
+					if ( ! in_array ( $key , $options['imported'] ) ) {
+						$options['imported'][] = $key;
+						update_option( 'instant_content', $options );
+					}
+
+				} else {
+					// First imported key to be added
+					$options['imported'][] = $key;
+					update_option( 'instant_content', $options );
+				}
+			}
+		}
+
 		// To return to ajax function
 		$ajax = array(
 			'id'      => $post_id,
