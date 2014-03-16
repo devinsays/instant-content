@@ -1022,8 +1022,7 @@ window[ 'instantContentImporter' ] = {
 	 */
 	importContentFail: function( errorThrown ) {
 		'use strict';
-		// console.log( 'errorThrown' );
-		// console.log( errorThrown );
+		console.log( errorThrown );
 	},
 
 	/**

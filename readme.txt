@@ -25,6 +25,10 @@ Allows you to purchase and import content to your WordPress site.
 
 == Changelog ==
 
+= 1.4.1 =
+
+* Fixes importer hang on first import
+
 = 1.4.0 =
 
 * New indicator in the library screen for articles that have been imported

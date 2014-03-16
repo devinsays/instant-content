@@ -129,13 +129,12 @@ class Instant_Content_Admin_Importer extends Instant_Content_Admin {
 			$options = get_option( 'instant_content', false );
 			// Items will not be added if the settings haven't been set
 			if ( $options ) {
-				if ( is_array( $options['imported'] ) ) {
+				if ( isset( $options['imported'] ) && is_array( $options['imported'] ) ) {
 					// Ensures duplicate keys are not added
 					if ( ! in_array ( $key , $options['imported'] ) ) {
 						$options['imported'][] = $key;
 						update_option( 'instant_content', $options );
 					}
-
 				} else {
 					// First imported key to be added
 					$options['imported'][] = $key;
